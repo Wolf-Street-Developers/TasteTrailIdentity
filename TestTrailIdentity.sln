@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestTrailIdentity", "TestTrailIdentity", "{4592367E-5217-4705-AD23-6366FC45EAB7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{152D57FB-F50C-4E03-A547-48C04A764BCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTrailIdentity.Core", "TestTrailIdentity\src\TestTrailIdentity.Core\TestTrailIdentity.Core.csproj", "{F56CF78D-6B0C-412B-979B-E5D7992AB0A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTrailIdentity.Infrastructure", "TestTrailIdentity\src\TestTrailIdentity.Infrastructure\TestTrailIdentity.Infrastructure.csproj", "{666D0034-65E4-4E45-9D63-F0169262695F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTrailIdentity.Api", "TestTrailIdentity\src\TestTrailIdentity.Api\TestTrailIdentity.Api.csproj", "{5B52A963-DEC2-45FC-85FC-80E7F01B6CE3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F56CF78D-6B0C-412B-979B-E5D7992AB0A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F56CF78D-6B0C-412B-979B-E5D7992AB0A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F56CF78D-6B0C-412B-979B-E5D7992AB0A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F56CF78D-6B0C-412B-979B-E5D7992AB0A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{666D0034-65E4-4E45-9D63-F0169262695F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{666D0034-65E4-4E45-9D63-F0169262695F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{666D0034-65E4-4E45-9D63-F0169262695F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{666D0034-65E4-4E45-9D63-F0169262695F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B52A963-DEC2-45FC-85FC-80E7F01B6CE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B52A963-DEC2-45FC-85FC-80E7F01B6CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B52A963-DEC2-45FC-85FC-80E7F01B6CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B52A963-DEC2-45FC-85FC-80E7F01B6CE3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{152D57FB-F50C-4E03-A547-48C04A764BCD} = {4592367E-5217-4705-AD23-6366FC45EAB7}
+		{F56CF78D-6B0C-412B-979B-E5D7992AB0A0} = {152D57FB-F50C-4E03-A547-48C04A764BCD}
+		{666D0034-65E4-4E45-9D63-F0169262695F} = {152D57FB-F50C-4E03-A547-48C04A764BCD}
+		{5B52A963-DEC2-45FC-85FC-80E7F01B6CE3} = {152D57FB-F50C-4E03-A547-48C04A764BCD}
+	EndGlobalSection
+EndGlobal
