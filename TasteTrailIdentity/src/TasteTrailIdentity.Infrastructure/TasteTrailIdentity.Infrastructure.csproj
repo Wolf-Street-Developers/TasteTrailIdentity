@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\TestTrailIdentity.Core\TestTrailIdentity.Core.csproj" />
+    <ProjectReference Include="..\TasteTrailIdentity.Core\TasteTrailIdentity.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

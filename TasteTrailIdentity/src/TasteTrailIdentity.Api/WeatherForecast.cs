@@ -1,4 +1,4 @@
-namespace TestTrailIdentity.Api;
+namespace TasteTrailIdentity.Api;
 
 public class WeatherForecast
 {

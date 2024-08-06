@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace TestTrailIdentity.Api.Controllers;
+namespace TasteTrailIdentity.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
