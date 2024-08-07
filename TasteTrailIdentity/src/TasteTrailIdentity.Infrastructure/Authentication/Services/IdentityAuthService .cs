@@ -55,16 +55,6 @@ public class IdentityAuthService : IIdentityAuthService
         return result ? IdentityResult.Success : IdentityResult.Failed(errors.ToArray());
     }
 
-    public Task SignOutAsync(Guid refresh, string jwt)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<AccessToken> UpdateToken(Guid refresh, string jwt)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<AccessToken> SignInAsync(string username, string password, bool rememberMe)
     {
         var user = await _userService.GetUserByUsernameAsync(username);
@@ -115,4 +105,59 @@ public class IdentityAuthService : IIdentityAuthService
             Jwt = tokenStr,
         };
     }
+
+    public Task<AccessToken> UpdateToken(Guid refresh, string jwt)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Guid> SignOutAsync(Guid refresh, string jwt)
+    {
+        if(jwt is null) {
+            throw new InvalidCredentialException("jwt is null!");
+        }
+
+        if(jwt.StartsWith("Bearer ")) {
+            jwt = jwt.Substring("Bearer ".Length);
+        }
+
+        var handler = new JwtSecurityTokenHandler();
+        var tokenValidationResult = await handler.ValidateTokenAsync(
+            jwt,
+            new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = _jwtOptions.Issuer,
+
+                ValidateAudience = true,
+                ValidAudience = _jwtOptions.Audience,
+
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(_jwtOptions.KeyInBytes)
+            }
+        );
+
+        if(tokenValidationResult.IsValid == false) {
+            throw new InvalidCredentialException("invalid jwt token!");
+        }
+
+        var token = handler.ReadJwtToken(jwt);
+
+        Claim? idClaim = token.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
+
+        if(idClaim is null) {
+            throw new InvalidCredentialException($"Token has no claim with type '{ClaimTypes.NameIdentifier}'");
+        }
+
+        var userId = idClaim.Value;
+
+        var foundUser = await _userService.GetUserByIdAsync(userId);
+
+        if(foundUser is null) {
+            throw new InvalidCredentialException($"User not found by id: '{userId}'");
+        }
+
+        return await _refreshTokenService.DeleteByIdAsync(refresh);
+    }
+
 }
