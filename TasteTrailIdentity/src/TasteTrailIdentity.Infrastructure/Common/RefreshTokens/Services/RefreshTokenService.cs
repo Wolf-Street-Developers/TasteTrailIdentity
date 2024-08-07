@@ -1,8 +1,6 @@
-
-
 using TasteTrailData.Core.Common.Tokens.RefreshTokens.Entities;
-using TasteTrailData.Core.Common.Tokens.RefreshTokens.Repositories;
-using TasteTrailData.Core.Common.Tokens.RefreshTokens.Services;
+using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Repositories;
+using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Services;
 
 namespace TasteTrailIdentity.Infrastructure.Common.RefreshTokens.Services;
 

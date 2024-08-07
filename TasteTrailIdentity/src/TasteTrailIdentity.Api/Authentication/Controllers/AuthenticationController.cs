@@ -1,8 +1,8 @@
 using System.Security.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using TasteTrail.Data.src.Core.Authentication.Services;
-using TasteTrailData.Infrastructure.Identities.Dtos;
+using TasteTrailIdentity.Core.Authentication.Services;
+using TasteTrailIdentity.Infrastructure.Identities.Dtos;
 
 namespace TasteTrailIdentity.Api.Controllers;
 

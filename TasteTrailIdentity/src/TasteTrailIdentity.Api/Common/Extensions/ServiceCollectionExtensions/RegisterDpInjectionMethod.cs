@@ -1,10 +1,10 @@
 namespace TasteTrailIdentity.Api.Common.Extensions.ServiceCollectionExtensions;
 
-using TasteTrail.Data.src.Core.Authentication.Services;
-using TasteTrailData.Core.Common.Tokens.RefreshTokens.Repositories;
-using TasteTrailData.Core.Common.Tokens.RefreshTokens.Services;
-using TasteTrailData.Core.Roles.Services;
-using TasteTrailData.Core.Users.Services;
+using TasteTrailIdentity.Core.Authentication.Services;
+using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Repositories;
+using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Services;
+using TasteTrailIdentity.Core.Roles.Services;
+using TasteTrailIdentity.Core.Users.Services;
 using TasteTrailIdentity.Infrastructure.Authentication.Services;
 using TasteTrailIdentity.Infrastructure.Common.RefreshTokens.Repositories.Ef_Core;
 using TasteTrailIdentity.Infrastructure.Common.RefreshTokens.Services;

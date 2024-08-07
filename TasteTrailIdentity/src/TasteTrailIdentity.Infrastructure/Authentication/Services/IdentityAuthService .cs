@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using TasteTrail.Data.src.Core.Authentication.Services;
 using TasteTrailData.Core.Common.Tokens.RefreshTokens.Entities;
-using TasteTrailData.Core.Common.Tokens.RefreshTokens.Services;
-using TasteTrailData.Core.Roles.Enums;
 using TasteTrailData.Core.Users.Models;
-using TasteTrailData.Core.Users.Services;
-using TasteTrailData.Infrastructure.Common.Dtos;
+using TasteTrailIdentity.Core.Authentication.Services;
+using TasteTrailIdentity.Core.Common.Tokens.AccessTokens.Entities;
+using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Services;
+using TasteTrailIdentity.Core.Roles.Enums;
+using TasteTrailIdentity.Core.Users.Services;
 using TasteTrailIdentity.Infrastructure.Common.Options;
 
 namespace TasteTrailIdentity.Infrastructure.Authentication.Services;

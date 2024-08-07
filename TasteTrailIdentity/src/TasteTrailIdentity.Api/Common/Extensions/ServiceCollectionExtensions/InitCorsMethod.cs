@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Cors.Infrastructure;
-
 namespace TasteTrailIdentity.Api.Common.Extensions.ServiceCollectionExtensions;
 
 public static class InitCorsMethod

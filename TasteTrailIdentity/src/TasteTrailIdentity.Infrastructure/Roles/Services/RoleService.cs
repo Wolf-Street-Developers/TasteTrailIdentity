@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
-using TasteTrailData.Core.Roles.Enums;
 using TasteTrailData.Core.Roles.Models;
-using TasteTrailData.Core.Roles.Services;
+using TasteTrailIdentity.Core.Roles.Enums;
+using TasteTrailIdentity.Core.Roles.Services;
 
 namespace TasteTrailIdentity.Infrastructure.Roles.Services;
 

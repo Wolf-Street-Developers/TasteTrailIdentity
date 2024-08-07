@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TasteTrailData.Core.Roles.Enums;
 using TasteTrailData.Core.Roles.Models;
 using TasteTrailData.Core.Users.Models;
-using TasteTrailData.Core.Users.Services;
+using TasteTrailIdentity.Core.Roles.Enums;
+using TasteTrailIdentity.Core.Users.Services;
 
 namespace TasteTrailIdentity.Infrastructure.Users.Services;
 
