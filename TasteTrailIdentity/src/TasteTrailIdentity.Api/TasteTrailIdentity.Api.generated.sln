@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TasteTrailIdentity.Infrastructure", "TasteTrailIdentity.Infrastructure.csproj", "{DDD40925-A9B2-4B76-A305-043E9B629DAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TasteTrailIdentity.Api", "TasteTrailIdentity.Api.csproj", "{90D1B849-31E7-41EB-90B0-6E39CA5C29DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DDD40925-A9B2-4B76-A305-043E9B629DAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DDD40925-A9B2-4B76-A305-043E9B629DAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DDD40925-A9B2-4B76-A305-043E9B629DAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DDD40925-A9B2-4B76-A305-043E9B629DAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90D1B849-31E7-41EB-90B0-6E39CA5C29DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90D1B849-31E7-41EB-90B0-6E39CA5C29DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90D1B849-31E7-41EB-90B0-6E39CA5C29DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90D1B849-31E7-41EB-90B0-6E39CA5C29DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {2C194C0F-1191-4E66-A369-48369ED3C751}
+		SolutionGuid = {6508AB86-93EA-46EC-9362-C07583002C88}
 	EndGlobalSection
 EndGlobal

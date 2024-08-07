@@ -64,7 +64,7 @@ public class IdentityAuthService : IIdentityAuthService
             throw new AuthenticationFailureException("Account is banned!");
 
         if (!result.Succeeded)
-            throw new AuthenticationFailureException("Invalid credentials!");
+            throw new InvalidCredentialException("Invalid credentials!");
 
         await _userService.AddUserClaimAsync(user, new Claim("IsMuted", user.IsMuted.ToString()));
 
