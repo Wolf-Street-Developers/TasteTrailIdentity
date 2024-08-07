@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
@@ -9,23 +10,26 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TasteTrail.Data.src.Core.Authentication.Services;
+using TasteTrailData.Core.Common.Tokens.RefreshTokens.Entities;
 using TasteTrailData.Core.Roles.Enums;
 using TasteTrailData.Core.Users.Models;
 using TasteTrailData.Core.Users.Services;
 using TasteTrailData.Infrastructure.Common.Dtos;
+using TasteTrailIdentity.Infrastructure.Common.Options;
 
 namespace TasteTrailIdentity.Infrastructure.Authentication.Services;
 
 public class IdentityAuthService : IIdentityAuthService
 {
     private readonly SignInManager<User> _signInManager;
-
     private readonly IUserService _userService;
+    private readonly JwtOptions _jwtOptions;
 
-    public IdentityAuthService(SignInManager<User> signInManager, IUserService userService, IOptionsSnapshot<JwtOptions> jwtOptionsSnapshot,)
+    public IdentityAuthService(SignInManager<User> signInManager, IUserService userService, IOptionsSnapshot<JwtOptions> jwtOptionsSnapshot)
     {
         _signInManager = signInManager;
         _userService = userService;
+        _jwtOptions = jwtOptionsSnapshot.Value;
     }
 
     public async Task<IdentityResult> RegisterAsync(User user, string password) {
@@ -78,32 +82,31 @@ public class IdentityAuthService : IIdentityAuthService
             .Append(new Claim(ClaimTypes.Email, user.Email ?? "not set"))
             .Append(new Claim(ClaimTypes.Name, user.UserName ?? "not set"));
 
-        var signingKey = new SymmetricSecurityKey(jwtOptions.KeyInBytes);
+        var signingKey = new SymmetricSecurityKey(_jwtOptions.KeyInBytes);
         var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: jwtOptions.Issuer,
-            audience: jwtOptions.Audience,
+            issuer: _jwtOptions.Issuer,
+            audience: _jwtOptions.Audience,
             claims: claims,
-            expires: DateTime.Now.AddMinutes(jwtOptions.LifeTimeInMinutes),
+            expires: DateTime.Now.AddMinutes(_jwtOptions.LifeTimeInMinutes),
             signingCredentials: signingCredentials
         );
 
         var handler = new JwtSecurityTokenHandler();
         var tokenStr = handler.WriteToken(token);
 
-        // create refresh token
         var refreshToken = new RefreshToken {
-            UserId = foundUser.Id,
+            UserId = user.Id,
             Token = Guid.NewGuid(),
         };
 
         await dbContext.RefreshTokens.AddAsync(refreshToken);
         await dbContext.SaveChangesAsync();
 
-        return Ok(new {
-            refresh = refreshToken.Token,
-            access = tokenStr,
-        });
+        return new AccessToken{
+            Refresh = refreshToken.Token,
+            Jwt = tokenStr,
+        };
     }
 }
