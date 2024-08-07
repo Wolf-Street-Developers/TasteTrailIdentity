@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TasteTrail.Data.src.Core.Authentication.Services;
 using TasteTrailData.Core.Common.Tokens.RefreshTokens.Entities;
+using TasteTrailData.Core.Common.Tokens.RefreshTokens.Services;
 using TasteTrailData.Core.Roles.Enums;
 using TasteTrailData.Core.Users.Models;
 using TasteTrailData.Core.Users.Services;
@@ -24,9 +25,16 @@ public class IdentityAuthService : IIdentityAuthService
     private readonly SignInManager<User> _signInManager;
     private readonly IUserService _userService;
     private readonly JwtOptions _jwtOptions;
+    private readonly IRefreshtokenService _refreshTokenService;
 
-    public IdentityAuthService(SignInManager<User> signInManager, IUserService userService, IOptionsSnapshot<JwtOptions> jwtOptionsSnapshot)
+    public IdentityAuthService(
+        SignInManager<User> signInManager, 
+        IUserService userService, 
+        IOptionsSnapshot<JwtOptions> jwtOptionsSnapshot,
+        IRefreshtokenService refreshTokenService
+        )
     {
+        _refreshTokenService = refreshTokenService;
         _signInManager = signInManager;
         _userService = userService;
         _jwtOptions = jwtOptionsSnapshot.Value;
@@ -98,11 +106,9 @@ public class IdentityAuthService : IIdentityAuthService
 
         var refreshToken = new RefreshToken {
             UserId = user.Id,
-            Token = Guid.NewGuid(),
         };
 
-        await dbContext.RefreshTokens.AddAsync(refreshToken);
-        await dbContext.SaveChangesAsync();
+        await _refreshTokenService.CreateAsync(refreshToken);
 
         return new AccessToken{
             Refresh = refreshToken.Token,
