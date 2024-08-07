@@ -3,7 +3,6 @@ namespace TasteTrailIdentity.Api.Common.Extensions.ServiceCollectionExtensions;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using TasteTrailData.Core.Roles.Enums;
 using TasteTrailIdentity.Infrastructure.Common.Options;
 
 public static class InitAuthMethod

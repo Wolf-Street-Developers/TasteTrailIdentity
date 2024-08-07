@@ -12,15 +12,15 @@ public static class InitAspnetIdentityMethod
     {
         serviceCollection.AddDbContext<TasteTrailDbContext>(options =>
         {
-            var connectinoString = configuration.GetConnectionString("SqlConnection");
-            options.UseNpgsql(connectinoString);
+            var connectionString = configuration.GetConnectionString("SqlConnection");
+            options.UseNpgsql(connectionString);
         });
 
         serviceCollection.AddIdentity<User, Role>( (options) => {
-            options.User.RequireUniqueEmail = true;
+
         })
             .AddEntityFrameworkStores<TasteTrailDbContext>()
             .AddDefaultTokenProviders()
-            .AddSignInManager();;
+            .AddSignInManager();
     }
 }

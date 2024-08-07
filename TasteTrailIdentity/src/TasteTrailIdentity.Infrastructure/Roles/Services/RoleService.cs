@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Identity;
 using TasteTrailData.Core.Roles.Enums;
+using TasteTrailData.Core.Roles.Models;
 using TasteTrailData.Core.Roles.Services;
-using TasteTrailData.Core.Users.Models;
 
 namespace TasteTrailIdentity.Infrastructure.Roles.Services;
 
 public class RoleService : IRoleService
 {
-    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly RoleManager<Role> _roleManager;
 
-    public RoleService(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+    public RoleService(RoleManager<Role> roleManager)
     {
         _roleManager = roleManager;
     }
@@ -19,7 +19,9 @@ public class RoleService : IRoleService
         var roleName = role.ToString();
 
         if (!await _roleManager.RoleExistsAsync(roleName))
-            return await _roleManager.CreateAsync(new IdentityRole(roleName));
+            return await _roleManager.CreateAsync(new Role(){
+                Name = roleName
+            });
 
         return IdentityResult.Failed(new IdentityError { Description = $"Role {roleName} already exists." });
     }
@@ -44,7 +46,10 @@ public class RoleService : IRoleService
             var roleExists = await this._roleManager.RoleExistsAsync(roleName);
             if (!roleExists)
             {
-                var role = new IdentityRole(roleName);
+                var role = new Role()
+                {
+                    Name = roleName
+                };
                 var result = await this._roleManager.CreateAsync(role);
                 
                 if (!result.Succeeded)

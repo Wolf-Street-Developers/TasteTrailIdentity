@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TasteTrailData.Core.Roles.Enums;
+using TasteTrailData.Core.Roles.Models;
 using TasteTrailData.Core.Users.Models;
 using TasteTrailData.Core.Users.Services;
 
@@ -15,9 +16,9 @@ public class UserService : IUserService
 {
     private readonly UserManager<User> _userManager;
 
-    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly RoleManager<Role> _roleManager;
 
-    public UserService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+    public UserService(UserManager<User> userManager, RoleManager<Role> roleManager)
     {
         _userManager = userManager;
         _roleManager = roleManager;

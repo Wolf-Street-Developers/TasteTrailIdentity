@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using System.Security.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
