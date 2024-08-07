@@ -1,15 +1,31 @@
+using TasteTrailData.Core.Roles.Services;
+using TasteTrailIdentity.Api.Common.Extensions.ServiceCollectionExtensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.InitAspnetIdentity(builder.Configuration);
+builder.Services.InitAuth(builder.Configuration);
+builder.Services.InitSwagger();
+builder.Services.InitCors();
+builder.Services.RegisterDpInjection();
+builder.Services.AddValidators();
+builder.Services.AddMediatR();
 
+
+builder.Services.AddAuthorization();
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+using (var scope = app.Services.CreateScope())
+{
+    var roleService = scope.ServiceProvider.GetRequiredService<IRoleService>();
+    await roleService.SetupRolesAsync();
+}
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -17,9 +33,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseCors("LocalHostPolicy");
 
 app.Run();

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Cors.Infrastructure;
+
 namespace TasteTrailIdentity.Api.Common.Extensions.ServiceCollectionExtensions;
 
 public static class InitCorsMethod
@@ -6,7 +8,7 @@ public static class InitCorsMethod
     {
         serviceCollection.AddCors(options =>
         {
-            options.AddPolicy("LocalHostPolicy", policyBuilder =>
+            options.AddPolicy(name: "LocalHostPolicy", policyBuilder =>
             {
                 policyBuilder
                     .WithOrigins("http://localhost")
