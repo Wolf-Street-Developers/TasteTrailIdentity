@@ -1,5 +1,6 @@
 namespace TasteTrailIdentity.Api.Common.Extensions.ServiceCollectionExtensions;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TasteTrailData.Core.Roles.Models;
 using TasteTrailData.Core.Users.Models;
@@ -18,6 +19,8 @@ public static class InitAspnetIdentityMethod
         serviceCollection.AddIdentity<User, Role>( (options) => {
             options.User.RequireUniqueEmail = true;
         })
-            .AddEntityFrameworkStores<TasteTrailDbContext>();
+            .AddEntityFrameworkStores<TasteTrailDbContext>()
+            .AddDefaultTokenProviders()
+            .AddSignInManager();;
     }
 }

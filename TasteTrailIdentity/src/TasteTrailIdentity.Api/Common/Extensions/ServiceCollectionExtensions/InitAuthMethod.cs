@@ -40,10 +40,18 @@ public static class InitAuthMethod
             });
 
         serviceCollection.AddAuthorization(options => {
+            // options.AddPolicy(
+            //     "TasteTrailPolicy",
+            //     (policyBuilder) => {
+            //         policyBuilder.RequireRole(UserRoles.User.ToString(), UserRoles.Admin.ToString());
+            //     }
+            // );
+
             options.AddPolicy(
-                "TasteTrailPolicy",
+                "NotMuted",
                 (policyBuilder) => {
-                    policyBuilder.RequireRole(UserRoles.User.ToString(), UserRoles.Admin.ToString());
+                    policyBuilder.RequireAuthenticatedUser();
+                    policyBuilder.RequireClaim("IsMuted", "False");
                 }
             );
         });
