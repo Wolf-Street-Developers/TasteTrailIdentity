@@ -19,6 +19,8 @@
 
 
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+
+    <PackageReference Include="TasteTrailData" Version="1.0.1" />
   </ItemGroup>
 
   <PropertyGroup>
