@@ -6,7 +6,7 @@ using TasteTrailData.Core.Common.Tokens.RefreshTokens.Services;
 
 namespace TasteTrailIdentity.Infrastructure.Common.RefreshTokens.Services;
 
-public class RefreshTokenService : IRefreshtokenService
+public class RefreshTokenService : IRefreshTokenService
 {
     private readonly IRefreshTokenRepository _repository;
     public RefreshTokenService(IRefreshTokenRepository repository)
@@ -30,9 +30,15 @@ public class RefreshTokenService : IRefreshtokenService
         return id;
     }
 
-    public async Task DeleteRangeRefreshTokensAsync(string userId)
+    public async Task<int> DeleteRangeRefreshTokensAsync(string userId)
     {
-        await _repository.DeleteRangeRefreshTokensAsync(userId);
+        if(string.IsNullOrEmpty(userId) || string.IsNullOrWhiteSpace(userId))
+        {
+            throw new ArgumentException("cannot create RefreshToken due to userId is empty");
+        }
+
+        var count = await _repository.DeleteRangeRefreshTokensAsync(userId);
+        return count;
     }
 
     public async Task<RefreshToken?> GetByIdAsync(Guid id)

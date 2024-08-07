@@ -25,13 +25,13 @@ public class IdentityAuthService : IIdentityAuthService
     private readonly SignInManager<User> _signInManager;
     private readonly IUserService _userService;
     private readonly JwtOptions _jwtOptions;
-    private readonly IRefreshtokenService _refreshTokenService;
+    private readonly IRefreshTokenService _refreshTokenService;
 
     public IdentityAuthService(
         SignInManager<User> signInManager, 
         IUserService userService, 
         IOptionsSnapshot<JwtOptions> jwtOptionsSnapshot,
-        IRefreshtokenService refreshTokenService
+        IRefreshTokenService refreshTokenService
         )
     {
         _refreshTokenService = refreshTokenService;
