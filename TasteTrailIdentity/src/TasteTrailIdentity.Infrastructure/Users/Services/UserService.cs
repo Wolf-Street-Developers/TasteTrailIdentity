@@ -110,7 +110,7 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId);
 
         if (user is null)
-            throw new Exception("User not found!");
+            throw new ArgumentException("User not found!");
 
         user.IsMuted = !user.IsMuted;
         await _userManager.UpdateAsync(user);
@@ -119,7 +119,7 @@ public class UserService : IUserService
         var isMutedClaim = claims.FirstOrDefault(c => c.Type == "IsMuted");
 
         if (isMutedClaim == null)
-            throw new Exception("Muted claim doesn't exist!");
+            throw new ArgumentException("Muted claim doesn't exist!");
 
         await _userManager.ReplaceClaimAsync(user, isMutedClaim, new Claim("IsMuted", user.IsMuted.ToString()));
     }
@@ -129,7 +129,7 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId);
 
         if (user is null)
-            throw new Exception("User not found!");
+            throw new ArgumentException("User not found!");
 
         user.IsBanned = !user.IsBanned;
         await _userManager.UpdateAsync(user);

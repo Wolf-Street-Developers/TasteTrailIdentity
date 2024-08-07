@@ -32,6 +32,10 @@ public class AuthenticationController : ControllerBase
         {
             return BadRequest(exeption.Message);
         }
+         catch(ArgumentException exeption)
+        {
+            return BadRequest(exeption.Message);
+        }
         catch(AuthenticationFailureException exeption)
         {
             return Forbid(exeption.Message);
