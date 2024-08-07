@@ -1,5 +1,6 @@
 using TasteTrailData.Core.Roles.Services;
 using TasteTrailIdentity.Api.Common.Extensions.ServiceCollectionExtensions;
+using TasteTrailIdentity.Api.Common.Extensions.WebApplicationExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,13 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
-using (var scope = app.Services.CreateScope())
-{
-    var roleService = scope.ServiceProvider.GetRequiredService<IRoleService>();
-    await roleService.SetupRolesAsync();
-}
-
+await app.SetupRoles();
 
 if (app.Environment.IsDevelopment())
 {
