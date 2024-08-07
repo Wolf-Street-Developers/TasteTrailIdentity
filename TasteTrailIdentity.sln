@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TasteTrailIdentity", "TasteTrailIdentity", "{4592367E-5217-4705-AD23-6366FC45EAB7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TasteTrailIdentity", "TasteTrailIdentity", "{5E431C7F-FB84-494C-89C8-63F93756D9E0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{152D57FB-F50C-4E03-A547-48C04A764BCD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EB60081A-DD6F-46FC-A6AB-CE6B362C95A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasteTrailIdentity.Core", "TasteTrailIdentity\src\TasteTrailIdentity.Core\TasteTrailIdentity.Core.csproj", "{F56CF78D-6B0C-412B-979B-E5D7992AB0A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasteTrailIdentity.Infrastructure", "TasteTrailIdentity\src\TasteTrailIdentity.Infrastructure\TasteTrailIdentity.Infrastructure.csproj", "{88E7B79F-91B0-4D36-96A8-1837DDA2C162}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasteTrailIdentity.Infrastructure", "TasteTrailIdentity\src\TasteTrailIdentity.Infrastructure\TasteTrailIdentity.Infrastructure.csproj", "{666D0034-65E4-4E45-9D63-F0169262695F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasteTrailIdentity.Api", "TasteTrailIdentity\src\TasteTrailIdentity.Api\TasteTrailIdentity.Api.csproj", "{5B52A963-DEC2-45FC-85FC-80E7F01B6CE3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasteTrailIdentity.Api", "TasteTrailIdentity\src\TasteTrailIdentity.Api\TasteTrailIdentity.Api.csproj", "{5E6988B9-496F-4623-BB8D-3B6DFF243E60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,23 +20,18 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F56CF78D-6B0C-412B-979B-E5D7992AB0A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F56CF78D-6B0C-412B-979B-E5D7992AB0A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F56CF78D-6B0C-412B-979B-E5D7992AB0A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F56CF78D-6B0C-412B-979B-E5D7992AB0A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{666D0034-65E4-4E45-9D63-F0169262695F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{666D0034-65E4-4E45-9D63-F0169262695F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{666D0034-65E4-4E45-9D63-F0169262695F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{666D0034-65E4-4E45-9D63-F0169262695F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B52A963-DEC2-45FC-85FC-80E7F01B6CE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B52A963-DEC2-45FC-85FC-80E7F01B6CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B52A963-DEC2-45FC-85FC-80E7F01B6CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B52A963-DEC2-45FC-85FC-80E7F01B6CE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88E7B79F-91B0-4D36-96A8-1837DDA2C162}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88E7B79F-91B0-4D36-96A8-1837DDA2C162}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88E7B79F-91B0-4D36-96A8-1837DDA2C162}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88E7B79F-91B0-4D36-96A8-1837DDA2C162}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E6988B9-496F-4623-BB8D-3B6DFF243E60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E6988B9-496F-4623-BB8D-3B6DFF243E60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E6988B9-496F-4623-BB8D-3B6DFF243E60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E6988B9-496F-4623-BB8D-3B6DFF243E60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{152D57FB-F50C-4E03-A547-48C04A764BCD} = {4592367E-5217-4705-AD23-6366FC45EAB7}
-		{F56CF78D-6B0C-412B-979B-E5D7992AB0A0} = {152D57FB-F50C-4E03-A547-48C04A764BCD}
-		{666D0034-65E4-4E45-9D63-F0169262695F} = {152D57FB-F50C-4E03-A547-48C04A764BCD}
-		{5B52A963-DEC2-45FC-85FC-80E7F01B6CE3} = {152D57FB-F50C-4E03-A547-48C04A764BCD}
+		{EB60081A-DD6F-46FC-A6AB-CE6B362C95A7} = {5E431C7F-FB84-494C-89C8-63F93756D9E0}
+		{88E7B79F-91B0-4D36-96A8-1837DDA2C162} = {EB60081A-DD6F-46FC-A6AB-CE6B362C95A7}
+		{5E6988B9-496F-4623-BB8D-3B6DFF243E60} = {EB60081A-DD6F-46FC-A6AB-CE6B362C95A7}
 	EndGlobalSection
 EndGlobal
