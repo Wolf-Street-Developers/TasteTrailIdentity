@@ -159,6 +159,7 @@ public class IdentityAuthService : IIdentityAuthService
         await _refreshTokenService.DeleteByIdAsync(refresh);
 
         var newRefreshToken = await _refreshTokenService.CreateAsync(new RefreshToken{
+            Token = Guid.NewGuid(),
             UserId = userId
         }) ;
 

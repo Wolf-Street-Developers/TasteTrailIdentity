@@ -1,6 +1,9 @@
+using System.ComponentModel.DataAnnotations;
 using System.Security.Authentication;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TasteTrailData.Core.Users.Models;
 using TasteTrailIdentity.Core.Authentication.Services;
 using TasteTrailIdentity.Infrastructure.Identities.Dtos;
 
@@ -21,7 +24,7 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost(Name = "LoginEndPoint")]
-    public async Task<IActionResult> Login([FromForm] LoginDto loginDto)
+    public async Task<IActionResult> Login([Required, FromForm] LoginDto loginDto)
     {
         try
         {
@@ -32,7 +35,7 @@ public class AuthenticationController : ControllerBase
         {
             return BadRequest(exeption.Message);
         }
-         catch(ArgumentException exeption)
+        catch(ArgumentException exeption)
         {
             return BadRequest(exeption.Message);
         }
@@ -46,5 +49,84 @@ public class AuthenticationController : ControllerBase
         }
     }
 
+    [HttpPost(Name = "RegistrationEndpoint")]
+    public async Task<IActionResult> Registration([Required, FromForm] RegistrationDto registrationDto)
+    {
+        try
+        {
+            var user = new User
+            {
+                UserName = registrationDto.Name,
+                Email = registrationDto.Email,
+            };
 
+            var result = await identityAuthService.RegisterAsync(user, registrationDto.Password);
+
+            return result.Succeeded ? Ok() : BadRequest(result.Errors);
+        }
+        catch(ArgumentException exception)
+        {
+            return BadRequest(exception.Message);
+        }
+        catch(InvalidCredentialException exception)
+        {
+            return BadRequest(exception.Message);
+        }
+        catch(Exception exeption)
+        {
+            return StatusCode(500, exeption.Message);
+        }
+    }
+
+    [Authorize]
+    [HttpPatch(Name = "LogOut")]
+    public async Task<IActionResult> Logout([Required, FromForm] Guid refresh)
+    {
+        try
+        {
+            var jwt = base.HttpContext.Request.Headers.Authorization.FirstOrDefault();
+            var deletedToken = await identityAuthService.SignOutAsync(refresh, jwt!);
+
+            return Ok(new {
+                Token = deletedToken
+            });
+        }
+        catch(ArgumentException exception)
+        {
+            return BadRequest(exception.Message);
+        }
+        catch(InvalidCredentialException exception)
+        {
+            return BadRequest(exception.Message);
+        }
+        catch(Exception exception)
+        {
+            return StatusCode(500, exception.Message);
+        }
+    }
+    
+    [Authorize]
+    [HttpPut(Name = "UpdateToken")]
+    public async Task<IActionResult> UpdateToken([Required, FromBody]Guid refresh)
+    {
+        try
+        {
+            var jwt = base.HttpContext.Request.Headers.Authorization.FirstOrDefault();
+            var accessToken = await identityAuthService.UpdateToken(refresh, jwt!);
+
+            return Ok(accessToken);
+        }
+        catch(ArgumentException exception)
+        {
+            return BadRequest(exception.Message);
+        }
+        catch(InvalidCredentialException exception)
+        {
+            return BadRequest(exception.Message);
+        }
+        catch(Exception exception)
+        {
+            return StatusCode(500, exception.Message);
+        }
+    }
 }
