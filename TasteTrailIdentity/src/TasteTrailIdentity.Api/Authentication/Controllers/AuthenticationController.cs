@@ -105,7 +105,6 @@ public class AuthenticationController : ControllerBase
         }
     }
     
-    [Authorize]
     [HttpPut(Name = "UpdateToken")]
     public async Task<IActionResult> UpdateToken([Required, FromBody]Guid refresh)
     {

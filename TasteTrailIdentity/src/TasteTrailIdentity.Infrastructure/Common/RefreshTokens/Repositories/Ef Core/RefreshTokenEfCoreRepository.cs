@@ -34,7 +34,7 @@ public class RefreshTokenEfCoreRepository : IRefreshTokenRepository
 
     public async Task<int> DeleteRangeRefreshTokensAsync(string userId)
     {
-        var refreshTokens = _dbContext.RefreshTokens.Where(rt => rt.UserId == userId);
+        var refreshTokens = _dbContext.RefreshTokens.Where(rt => rt.UserId == userId).AsNoTracking();
         _dbContext.RemoveRange(refreshTokens);
         await _dbContext.SaveChangesAsync();
 
@@ -43,6 +43,6 @@ public class RefreshTokenEfCoreRepository : IRefreshTokenRepository
 
     public async Task<RefreshToken?> GetByIdAsync(Guid id)
     {
-        return await _dbContext.RefreshTokens.Where(rt => rt.Token == id).FirstOrDefaultAsync();
+        return await _dbContext.RefreshTokens.Where(rt => rt.Token == id).AsNoTracking().FirstOrDefaultAsync();
     }
 }

@@ -123,13 +123,15 @@ public class IdentityAuthService : IIdentityAuthService
                 ValidateAudience = true,
                 ValidAudience = _jwtOptions.Audience,
 
+                ValidateLifetime = false,
+
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(_jwtOptions.KeyInBytes)
             }
         );
 
         if(tokenValidationResult.IsValid == false) {
-            throw new InvalidCredentialException("invalid jwt token!");
+            throw new InvalidCredentialException(tokenValidationResult.Exception.Message);
         }
 
         var token = handler.ReadJwtToken(jwt);

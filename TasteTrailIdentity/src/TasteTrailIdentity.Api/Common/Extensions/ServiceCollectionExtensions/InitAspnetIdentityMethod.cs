@@ -17,7 +17,7 @@ public static class InitAspnetIdentityMethod
         });
 
         serviceCollection.AddIdentity<User, Role>( (options) => {
-
+            options.User.RequireUniqueEmail = true;
         })
             .AddEntityFrameworkStores<TasteTrailDbContext>()
             .AddDefaultTokenProviders()
