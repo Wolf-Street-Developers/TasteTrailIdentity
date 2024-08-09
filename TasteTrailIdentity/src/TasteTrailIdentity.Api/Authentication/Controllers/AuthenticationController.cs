@@ -80,7 +80,7 @@ public class AuthenticationController : ControllerBase
 
     [Authorize]
     [HttpPatch(Name = "LogOut")]
-    public async Task<IActionResult> Logout([Required, FromForm] Guid refresh)
+    public async Task<IActionResult> Logout([Required, FromBody] Guid refresh)
     {
         try
         {
