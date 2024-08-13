@@ -23,11 +23,11 @@ public interface IUserService
 
     Task<IdentityResult> RemoveRoleFromUserAsync(string userId, UserRoles role);
 
-    Task AddUserClaimAsync(User user, Claim claim);
+    Task<IdentityResult> AddUserClaimAsync(User user, Claim claim);
 
-    Task ToggleBanUser(string userId);
+    Task<IdentityResult> ToggleBanUser(string userId);
 
-    Task ToggleMuteUser(string userId);
+    Task<IdentityResult> ToggleMuteUser(string userId);
 
     Task<bool> HasRegisteredUsers();
 }

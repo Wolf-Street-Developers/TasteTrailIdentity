@@ -96,26 +96,22 @@ public class UserService : IUserService
         return await _userManager.Users.AnyAsync();
     }
 
-    public async Task ToggleMuteUser(string userId)
+    public async Task<IdentityResult> ToggleMuteUser(string userId)
     {
-        var user = await _userManager.FindByIdAsync(userId);
-
-        if (user is null)
-            throw new ArgumentException("User not found!");
+        var user = await _userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"cannot find user with id: {userId}");
 
         user.IsMuted = !user.IsMuted;
         await _userManager.UpdateAsync(user);
 
-        var claims = await _userManager.GetClaimsAsync(user);
-        var isMutedClaim = claims.FirstOrDefault(c => c.Type == "IsMuted");
+        var claims = await _userManager.GetClaimsAsync(user) ?? throw new ArgumentException($"cannot find calims of user with id: {user.Id}");
 
-        if (isMutedClaim == null)
-            throw new ArgumentException("Muted claim doesn't exist!");
+        var isMutedClaim = claims.FirstOrDefault(c => c.Type == "IsMuted") ?? throw new ArgumentException("Muted claim doesn't exist!");
 
-        await _userManager.ReplaceClaimAsync(user, isMutedClaim, new Claim("IsMuted", user.IsMuted.ToString()));
+
+        return await _userManager.ReplaceClaimAsync(user, isMutedClaim, new Claim("IsMuted", user.IsMuted.ToString()));
     }
 
-    public async Task ToggleBanUser(string userId)
+    public async Task<IdentityResult> ToggleBanUser(string userId)
     {
         var user = await _userManager.FindByIdAsync(userId);
 
@@ -123,7 +119,7 @@ public class UserService : IUserService
             throw new ArgumentException("User not found!");
 
         user.IsBanned = !user.IsBanned;
-        await _userManager.UpdateAsync(user);
+        return await _userManager.UpdateAsync(user);
     }
 
     public async Task<IList<Claim>> GetUserClaimsAsync(User user)
@@ -131,12 +127,11 @@ public class UserService : IUserService
         return await _userManager.GetClaimsAsync(user) ?? throw new ArgumentException($"cannot find calims of user with id: {user.Id}");
     }
 
-    public async Task AddUserClaimAsync(User user, Claim claim)
+    public async Task<IdentityResult> AddUserClaimAsync(User user, Claim claim)
     {
         var existingClaim = (await _userManager.GetClaimsAsync(user))
                 .FirstOrDefault(c => c.Type == claim.Type);
 
-        if (existingClaim is null)
-            await _userManager.AddClaimAsync(user, claim);
+        return existingClaim is null ? await _userManager.AddClaimAsync(user, claim) : throw new ArgumentException($"this claim is already exists!");
     }
 }
