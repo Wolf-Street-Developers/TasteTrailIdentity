@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TasteTrailData.Core.Users.Models;
+using TasteTrailData.Api.Common.Extensions.Controllers;
 using TasteTrailIdentityManager.Core.Authentication.Services;
 using TasteTrailIdentityManager.Infrastructure.Identities.Dtos;
 
@@ -43,9 +44,9 @@ public class AuthenticationController : ControllerBase
         {
             return Forbid(exeption.Message);
         }
-        catch (Exception exeption)
+        catch (Exception exception)
         {
-            return StatusCode(500, exeption.Message);
+            return this.InternalServerError(exception.Message);
         }
     }
 
@@ -72,9 +73,9 @@ public class AuthenticationController : ControllerBase
         {
             return BadRequest(exception.Message);
         }
-        catch(Exception exeption)
+        catch(Exception exception)
         {
-            return StatusCode(500, exeption.Message);
+            return this.InternalServerError(exception.Message);
         }
     }
 
@@ -101,7 +102,7 @@ public class AuthenticationController : ControllerBase
         }
         catch(Exception exception)
         {
-            return StatusCode(500, exception.Message);
+            return this.InternalServerError(exception.Message);
         }
     }
     
@@ -125,7 +126,7 @@ public class AuthenticationController : ControllerBase
         }
         catch(Exception exception)
         {
-            return StatusCode(500, exception.Message);
+            return this.InternalServerError(exception.Message);
         }
     }
 }
