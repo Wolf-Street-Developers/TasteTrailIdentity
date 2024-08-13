@@ -22,10 +22,8 @@ public class RefreshTokenEfCoreRepository : IRefreshTokenRepository
 
     public async Task<Guid> DeleteByIdAsync(Guid id)
     {
-        _dbContext.RefreshTokens.Remove(new RefreshToken()
-        {
-            Token = id
-        });
+        var tokenToDelete = _dbContext.RefreshTokens.Where(rt => rt.Token == id).FirstOrDefault();
+        _dbContext.RefreshTokens.Remove(tokenToDelete!);
 
         await _dbContext.SaveChangesAsync();
 
