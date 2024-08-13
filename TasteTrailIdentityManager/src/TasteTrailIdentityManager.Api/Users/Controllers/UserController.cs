@@ -104,7 +104,7 @@ public class UserController : ControllerBase
 
             var jwt = HttpContext.Request.Headers.Authorization.FirstOrDefault();
 
-            await _identityAuthService.SignOutAsync(jwt: jwt!, refresh: refresh);
+            _ = await _identityAuthService.SignOutAsync(jwt: jwt!, refresh: refresh);
             return Ok();
         }       
         catch(ArgumentException exception)
@@ -164,21 +164,24 @@ public class UserController : ControllerBase
 
     // }
 
-    // [HttpPost("{userId}")]
-    // [Authorize(Roles = "Admin")]
-    // public async Task<IActionResult> ToggleBan(string userId)
-    // {
-    //     try
-    //     {
-    //         await _userService.ToggleBanUser(userId);
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         BadRequest(ex.Message);
-    //     }
-
-    //     return RedirectToAction("Index");
-    // }
+    [HttpPost("{userId}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> ToggleBan(string userId)
+    {
+        try
+        {
+            var result = await _userService.ToggleBanUser(userId);
+            return result.Succeeded ? Ok() : BadRequest(result.Errors);
+        }
+        catch(ArgumentException exception)
+        {   
+            return BadRequest(exception.Message);
+        }
+        catch(Exception exception)
+        {
+            return this.InternalServerError(exception.Message);
+        }
+    }
 
     [HttpGet("/api/[controller]/{userId}")]
     [Authorize(Roles = "Admin")]
