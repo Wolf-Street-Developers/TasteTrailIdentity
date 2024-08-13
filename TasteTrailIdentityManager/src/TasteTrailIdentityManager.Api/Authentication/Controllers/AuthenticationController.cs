@@ -24,7 +24,7 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost(Name = "LoginEndPoint")]
-    public async Task<IActionResult> Login([Required, FromForm] LoginDto loginDto)
+    public async Task<IActionResult> LoginAsync([Required, FromForm] LoginDto loginDto)
     {
         try
         {
@@ -50,7 +50,7 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost(Name = "RegistrationEndpoint")]
-    public async Task<IActionResult> Registration([Required, FromForm] RegistrationDto registrationDto)
+    public async Task<IActionResult> RegistrationAsync([Required, FromForm] RegistrationDto registrationDto)
     {
         try
         {
@@ -80,7 +80,7 @@ public class AuthenticationController : ControllerBase
 
     [Authorize]
     [HttpPatch(Name = "LogOut")]
-    public async Task<IActionResult> Logout([Required, FromBody] Guid refresh)
+    public async Task<IActionResult> LogoutAsync([Required, FromBody] Guid refresh)
     {
         try
         {
@@ -106,7 +106,7 @@ public class AuthenticationController : ControllerBase
     }
     
     [HttpPut(Name = "UpdateToken")]
-    public async Task<IActionResult> UpdateToken([Required, FromBody]Guid refresh)
+    public async Task<IActionResult> UpdateTokenAsync([Required, FromBody]Guid refresh)
     {
         try
         {
