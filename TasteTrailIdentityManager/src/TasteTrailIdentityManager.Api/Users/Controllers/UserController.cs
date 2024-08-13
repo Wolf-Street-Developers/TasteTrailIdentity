@@ -148,25 +148,28 @@ public class UserController : ControllerBase
     //     return Ok();
     // }
 
-    // [HttpPost("{userId}")]
-    // [Authorize(Roles = "Admin")]
-    // public async Task<IActionResult> ToggleMute(string userId)
-    // {
-    //     try
-    //     {
-    //         await _userService.ToggleMuteUser(userId);
-    //         return Ok();
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         return BadRequest(ex.Message);
-    //     }
-
-    // }
+    [HttpPost("{userId}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> ToggleMuteAsync(string userId)
+    {
+        try
+        {
+            var result = await _userService.ToggleMuteUser(userId);
+            return result.Succeeded ? Ok() : BadRequest(result.Errors);
+        }
+        catch(ArgumentException exception)
+        {   
+            return BadRequest(exception.Message);
+        }
+        catch(Exception exception)
+        {
+            return this.InternalServerError(exception.Message);
+        }
+    }
 
     [HttpPost("{userId}")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> ToggleBan(string userId)
+    public async Task<IActionResult> ToggleBanAsync(string userId)
     {
         try
         {
