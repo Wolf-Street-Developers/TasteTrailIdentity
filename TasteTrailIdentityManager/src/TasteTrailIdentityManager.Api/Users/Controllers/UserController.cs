@@ -55,7 +55,7 @@ public class UserController : ControllerBase
 
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetAsync(string id)
+    public async Task<IActionResult> GetUserRolesAsync(string id)
     {
         try
         {
@@ -80,7 +80,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("/api/[controller]/{id}")]
     [Authorize]
     public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserDto model, [FromBody] Guid refresh)
     {
@@ -180,15 +180,11 @@ public class UserController : ControllerBase
     //     return RedirectToAction("Index");
     // }
 
-    // [HttpGet("{userId}")]
-    // [Authorize(Roles = "Admin")]
-    // public async Task<IActionResult> UserInfo(string userId)
-    // {
-    //     var user = await this._userService.GetUserByIdAsync(userId);
-    //     if (user == null)
-    //     {
-    //         return NotFound();
-    //     }
-    //     return View(user);
-    // }
+    [HttpGet("/api/[controller]/{userId}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetUserInfoAsync(string userId)
+    {
+        var user = await _userService.GetUserByIdAsync(userId);
+        return user is not null ? Ok(user) : BadRequest("")
+    }
 }

@@ -53,44 +53,37 @@ public class UserService : IUserService
     public async Task<IdentityResult> UpdateUserAsync(User user)
     {
         _ = await _userManager.FindByIdAsync(user.Id) ?? throw new ArgumentException($"cannot find user with id: {user.Id}");
-        
+
         return await _userManager.UpdateAsync(user);
     }
 
     public async Task<IdentityResult> DeleteUserAsync(string userId)
     {
-        var user = await _userManager.FindByIdAsync(userId);
-
-        if (user == null)
-            return IdentityResult.Failed(new IdentityError { Description = $"User with ID {userId} not found." });
+        var user = await _userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"cannot find user with id: {userId}");
 
         return await _userManager.DeleteAsync(user);
     }
 
     public async Task<IdentityResult> AssignRoleToUserAsync(string userId, UserRoles role)
     {
-        var user = await _userManager.FindByIdAsync(userId);
+        var user = await _userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"cannot find user with id: {userId}");
         var roleName = role.ToString();
-
-        if (user == null)
-            return IdentityResult.Failed(new IdentityError { Description = $"User with id {userId} not found." });
-
-        var roles = await _userManager.GetRolesAsync(user);
-        var result = await _userManager.RemoveFromRolesAsync(user, roles);
 
         if (!await _roleManager.RoleExistsAsync(roleName))
             return IdentityResult.Failed(new IdentityError { Description = $"Role {roleName} not found." });
+
+        var roles = await _userManager.GetRolesAsync(user);
+
+        if (_userManager.RemoveFromRolesAsync(user, roles).Result.Succeeded)
+            return IdentityResult.Failed(new IdentityError { Description = $"Cannot rewrite roles." });
 
         return await _userManager.AddToRoleAsync(user, roleName);
     }
 
     public async Task<IdentityResult> RemoveRoleFromUserAsync(string userId, UserRoles role)
     {
-        var user = await _userManager.FindByNameAsync(userId);
+        var user = await _userManager.FindByNameAsync(userId) ?? throw new ArgumentException($"cannot find user with id: {userId}");
         var roleName = role.ToString();
-
-        if (user == null)
-            return IdentityResult.Failed(new IdentityError { Description = $"User with id {userId} not found." });
 
         if (!await _roleManager.RoleExistsAsync(roleName))
             return IdentityResult.Failed(new IdentityError { Description = $"Role {roleName} not found." });
