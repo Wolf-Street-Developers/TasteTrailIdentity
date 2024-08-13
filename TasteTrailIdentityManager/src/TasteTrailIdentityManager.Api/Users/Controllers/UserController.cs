@@ -184,7 +184,18 @@ public class UserController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetUserInfoAsync(string userId)
     {
-        var user = await _userService.GetUserByIdAsync(userId);
-        return user is not null ? Ok(user) : BadRequest("");
+        try
+        {
+            var user = await _userService.GetUserByIdAsync(userId);
+            return Ok(user);
+        }
+        catch(ArgumentException exception)
+        {   
+            return BadRequest(exception.Message);
+        }
+        catch(Exception exception)
+        {
+            return this.InternalServerError(exception.Message);
+        }
     }
 }
