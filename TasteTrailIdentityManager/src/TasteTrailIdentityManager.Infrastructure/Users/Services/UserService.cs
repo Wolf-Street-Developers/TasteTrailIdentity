@@ -52,6 +52,8 @@ public class UserService : IUserService
 
     public async Task<IdentityResult> UpdateUserAsync(User user)
     {
+        _ = await _userManager.FindByIdAsync(user.Id) ?? throw new ArgumentException($"cannot find user with id: {user.Id}");
+        
         return await _userManager.UpdateAsync(user);
     }
 

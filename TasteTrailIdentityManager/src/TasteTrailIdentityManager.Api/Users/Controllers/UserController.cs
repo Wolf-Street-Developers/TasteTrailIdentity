@@ -78,34 +78,34 @@ public class UserController : ControllerBase
         }
     }
 
-    // [HttpPut]
-    // [Authorize]
-    // public async Task<IActionResult> Update([FromBody] UpdateUserViewModel model)
-    // {
-    //     if (ModelState.IsValid)
-    //     {
-    //         var user = await _userService.GetUserByIdAsync(model.Id);
-    //         if (user == null)
-    //         {
-    //             return NotFound();
-    //         }
+    [HttpPut]
+    [Authorize]
+    public async Task<IActionResult> Update([FromBody] UpdateUserDto model)
+    {
+        if (ModelState.IsValid)
+        {
+            var user = await _userService.GetUserByIdAsync(model.Id);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-    //         user.UserName = model.Name;
-    //         user.Email = model.Email;
+            user.UserName = model.Name;
+            user.Email = model.Email;
 
-    //         var result = await _userService.UpdateUserAsync(user);
-    //         if (result.Succeeded)
-    //         {
-    //             await this._identityAuthService.SignOutAsync();
-    //             return base.Ok();
+            var result = await _userService.UpdateUserAsync(user);
+            if (result.Succeeded)
+            {
+                await this._identityAuthService.SignOutAsync();
+                return base.Ok();
         
-    //         }
+            }
 
-    //         return BadRequest(result.Errors);
-    //     }
+            return BadRequest(result.Errors);
+        }
 
-    //     return BadRequest(ModelState);
-    // }
+        return BadRequest(ModelState);
+    }
 
     // [HttpPost]
     // [Authorize(Roles = "Admin")]
