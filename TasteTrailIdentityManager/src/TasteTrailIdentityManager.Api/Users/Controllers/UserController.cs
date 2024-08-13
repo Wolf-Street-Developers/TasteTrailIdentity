@@ -34,13 +34,13 @@ public class UserController : ControllerBase
             {
                 var roles = await _userService.GetRolesByUsernameAsync(user.UserName!);
 
-                var userViewModel = new UserDto()
+                var userDto = new UserDto()
                 {
                     User = user,
                     Roles = roles
                 };
 
-                userDtos.Add(userViewModel);
+                userDtos.Add(userDto);
             }
 
             return Ok(userDtos);
@@ -52,19 +52,31 @@ public class UserController : ControllerBase
     }
 
 
-    // [HttpGet("{id}")]
-    // public async Task<IActionResult> Json(string id)
-    // {
-    //     var user = await this._userService.GetUserByIdAsync(id);
-    //     var role = await this._userService.GetRolesByUsernameAsync(user.UserName!);
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetAsync(string id)
+    {
+        try
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+            var roles = await _userService.GetRolesByUsernameAsync(user.UserName!);
 
-    //     if (user == null)
-    //     {
-    //         return NotFound();
-    //     }
+            var userDto = new UserDto()
+            {
+                User = user,
+                Roles = roles
+            };
 
-    //     return Json(new { id = user.Id, name = user.UserName, email = user.Email, role = role });
-    // }
+            return Ok(userDto);
+        }
+        catch(ArgumentException exception)
+        {   
+            return BadRequest(exception.Message);
+        }
+        catch(Exception exception)
+        {
+            return this.InternalServerError(exception.Message);
+        }
+    }
 
     // [HttpPut]
     // [Authorize]
