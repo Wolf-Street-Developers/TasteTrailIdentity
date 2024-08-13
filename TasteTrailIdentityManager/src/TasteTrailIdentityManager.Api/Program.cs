@@ -1,3 +1,4 @@
+using TasteTrailData.Api.Common.Extensions.ServiceCollection;
 using TasteTrailIdentityManager.Api.Common.Extensions.ServiceCollectionExtensions;
 using TasteTrailIdentityManager.Api.Common.Extensions.WebApplicationExtensions;
 
