@@ -118,20 +118,24 @@ public class UserController : ControllerBase
         }
     }
 
-    // [HttpPost]
-    // [Authorize(Roles = "Admin")]
-    // public async Task<IActionResult> AssignRole([FromQuery] string userId, [FromQuery] UserRoles role)
-    // {
-    //     try
-    //     {
-    //         await _userService.AssignRoleToUserAsync(userId, role);
-    //         return Ok();
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         return BadRequest(ex.Message); // Возвращаем ошибку 400 при исключении
-    //     }
-    // }
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> AssignRoleAsync([FromQuery] string userId, [FromQuery] UserRoles role)
+    {
+        try
+        {
+            var result = await _userService.AssignRoleToUserAsync(userId, role);
+            return result.Succeeded ? Ok() : BadRequest(result.Errors);
+        }
+        catch(ArgumentException exception)
+        {   
+            return BadRequest(exception.Message);
+        }
+        catch(Exception exception)
+        {
+            return this.InternalServerError(exception.Message);
+        }
+    }
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
