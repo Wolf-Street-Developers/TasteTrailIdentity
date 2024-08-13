@@ -185,6 +185,6 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetUserInfoAsync(string userId)
     {
         var user = await _userService.GetUserByIdAsync(userId);
-        return user is not null ? Ok(user) : BadRequest("")
+        return user is not null ? Ok(user) : BadRequest("");
     }
 }

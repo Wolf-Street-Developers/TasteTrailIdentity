@@ -128,7 +128,7 @@ public class UserService : IUserService
 
     public async Task<IList<Claim>> GetUserClaimsAsync(User user)
     {
-        return await _userManager.GetClaimsAsync(user);
+        return await _userManager.GetClaimsAsync(user) ?? throw new ArgumentException($"cannot find calims of user with id: {user.Id}");
     }
 
     public async Task AddUserClaimAsync(User user, Claim claim)
