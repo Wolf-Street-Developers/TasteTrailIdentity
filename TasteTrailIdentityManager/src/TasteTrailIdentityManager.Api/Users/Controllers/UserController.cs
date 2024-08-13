@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TasteTrailData.Api.Common.Extensions.Controllers;
 using TasteTrailData.Core.Users.Models;
 using TasteTrailIdentityManager.Core.Authentication.Services;
+using TasteTrailIdentityManager.Core.Roles.Enums;
 using TasteTrailIdentityManager.Core.Users.Services;
 using TasteTrailIdentityManager.Infrastructure.Users.Dtos;
 
@@ -132,21 +133,24 @@ public class UserController : ControllerBase
     //     }
     // }
 
-    // [HttpPost]
-    // [Authorize(Roles = "Admin")]
-    // public async Task<IActionResult> RemoveRole([FromQuery] string username, [FromQuery] UserRoles role)
-    // {
-    //     try
-    //     {
-    //         await _userService.RemoveRoleFromUserAsync(username, role);
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         BadRequest(ex.Message);
-    //     }
-
-    //     return Ok();
-    // }
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> RemoveRoleAsync([FromQuery] string username, [FromQuery] UserRoles role)
+    {
+        try
+        {
+            var result = await _userService.RemoveRoleFromUserAsync(username, role);
+            return result.Succeeded ? Ok() : BadRequest(result.Errors);
+        }
+        catch(ArgumentException exception)
+        {   
+            return BadRequest(exception.Message);
+        }
+        catch(Exception exception)
+        {
+            return this.InternalServerError(exception.Message);
+        }
+    }
 
     [HttpPost("{userId}")]
     [Authorize(Roles = "Admin")]
