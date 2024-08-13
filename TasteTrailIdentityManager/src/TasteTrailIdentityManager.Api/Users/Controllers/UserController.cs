@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TasteTrailData.Api.Common.Extensions.Controllers;
 using TasteTrailIdentityManager.Core.Authentication.Services;
 using TasteTrailIdentityManager.Core.Users.Services;
 using TasteTrailIdentityManager.Infrastructure.Users.Dtos;
@@ -23,40 +24,47 @@ public class UserController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAllAsync()
     {
-        var users = await _userService.GetAllAsync();
-
-        var userDtos = new List<UserDto>();
-
-        foreach (var user in users)
+        try
         {
-            var roles = await _userService.GetRolesByUsernameAsync(user.UserName!);
+            var users = await _userService.GetAllAsync();
 
-            var userViewModel = new UserDto()
+            var userDtos = new List<UserDto>();
+
+            foreach (var user in users)
             {
-                User = user,
-                Roles = roles
-            };
+                var roles = await _userService.GetRolesByUsernameAsync(user.UserName!);
 
-            userDtos.Add(userViewModel);
+                var userViewModel = new UserDto()
+                {
+                    User = user,
+                    Roles = roles
+                };
+
+                userDtos.Add(userViewModel);
+            }
+
+            return Ok(userDtos);
         }
-
-        return Ok(userDtos);
-    }
-
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> Json(string id)
-    {
-        var user = await this._userService.GetUserByIdAsync(id);
-        var role = await this._userService.GetRolesByUsernameAsync(user.UserName!);
-
-        if (user == null)
+        catch(Exception exception)
         {
-            return NotFound();
+            return this.InternalServerError(exception.Message);
         }
-
-        return Json(new { id = user.Id, name = user.UserName, email = user.Email, role = role });
     }
+
+
+    // [HttpGet("{id}")]
+    // public async Task<IActionResult> Json(string id)
+    // {
+    //     var user = await this._userService.GetUserByIdAsync(id);
+    //     var role = await this._userService.GetRolesByUsernameAsync(user.UserName!);
+
+    //     if (user == null)
+    //     {
+    //         return NotFound();
+    //     }
+
+    //     return Json(new { id = user.Id, name = user.UserName, email = user.Email, role = role });
+    // }
 
     // [HttpPut]
     // [Authorize]
