@@ -11,9 +11,9 @@ using TasteTrailIdentityManager.Infrastructure.Common.RefreshTokens.Services;
 using TasteTrailIdentityManager.Infrastructure.Roles.Services;
 using TasteTrailIdentityManager.Infrastructure.Users.Services;
 
-public static class RegisterDpInjectionMethod
+public static class RegisterDependencyInjectionMethod 
 {
-    public static void RegisterDpInjection(this IServiceCollection serviceCollection)
+    public static void RegisterDependencyInjection(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddTransient<IUserService, UserService>();
         serviceCollection.AddTransient<IRoleService, RoleService>();

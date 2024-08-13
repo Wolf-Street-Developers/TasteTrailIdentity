@@ -8,7 +8,7 @@ builder.Services.InitAspnetIdentity(builder.Configuration);
 builder.Services.InitAuth(builder.Configuration);
 builder.Services.InitSwagger();
 builder.Services.InitCors();
-builder.Services.RegisterDpInjection();
+builder.Services.RegisterDependencyInjection();
 builder.Services.AddValidators();
 builder.Services.AddMediatR();
 
