@@ -24,7 +24,7 @@ public class UserService : IUserService
     {
         return await _userManager.CreateAsync(user, password);
     }
-    public async Task<IList<string>> GetRoleByUsernameAsync(string username)
+    public async Task<IList<string>> GetRolesByUsernameAsync(string username)
     {
         var user  = await GetUserByUsernameAsync(username: username);
         return await _userManager.GetRolesAsync(user);

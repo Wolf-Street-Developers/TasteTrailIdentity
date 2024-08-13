@@ -68,7 +68,7 @@ public class IdentityAuthService : IIdentityAuthService
 
         await _userService.AddUserClaimAsync(user, new Claim("IsMuted", user.IsMuted.ToString()));
 
-        var roles = await _userService.GetRoleByUsernameAsync(username);
+        var roles = await _userService.GetRolesByUsernameAsync(username);
 
         var claims = roles
             .Select(roleStr => new Claim(ClaimTypes.Role, roleStr))
@@ -165,7 +165,7 @@ public class IdentityAuthService : IIdentityAuthService
             UserId = userId
         }) ;
 
-        var roles = await _userService.GetRoleByUsernameAsync(foundUser.UserName!);
+        var roles = await _userService.GetRolesByUsernameAsync(foundUser.UserName!);
 
         var claims = roles
             .Select(roleStr => new Claim(ClaimTypes.Role, roleStr))

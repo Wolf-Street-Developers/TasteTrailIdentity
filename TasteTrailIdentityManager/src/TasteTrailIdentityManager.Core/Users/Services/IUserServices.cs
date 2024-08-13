@@ -10,7 +10,7 @@ public interface IUserService
     Task<IdentityResult> CreateUserAsync(User user, string password);
 
     Task<IEnumerable<User>> GetAllAsync();
-    Task<IList<string>> GetRoleByUsernameAsync(string username);
+    Task<IList<string>> GetRolesByUsernameAsync(string username);
     Task<User> GetUserByIdAsync(string userId);
 
     Task<User> GetUserByUsernameAsync(string username);
