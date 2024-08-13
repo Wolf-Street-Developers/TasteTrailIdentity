@@ -83,7 +83,7 @@ public class UserController : ControllerBase
 
     [HttpPut("/api/[controller]/{id}")]
     [Authorize]
-    public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserDto model)
+    public async Task<IActionResult> UpdateAsync([FromQuery] UpdateUserDto model, [FromQuery] Guid refresh)
     {
         try
         {
