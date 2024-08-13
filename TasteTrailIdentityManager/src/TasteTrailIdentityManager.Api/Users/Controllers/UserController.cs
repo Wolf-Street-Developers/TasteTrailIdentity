@@ -1,6 +1,8 @@
+using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TasteTrailData.Api.Common.Extensions.Controllers;
+using TasteTrailData.Core.Users.Models;
 using TasteTrailIdentityManager.Core.Authentication.Services;
 using TasteTrailIdentityManager.Core.Users.Services;
 using TasteTrailIdentityManager.Infrastructure.Users.Dtos;
@@ -78,33 +80,41 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPut]
+    [HttpPut("{id}")]
     [Authorize]
-    public async Task<IActionResult> Update([FromBody] UpdateUserDto model)
+    public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserDto model, [FromBody] Guid refresh)
     {
-        if (ModelState.IsValid)
+        try
         {
-            var user = await _userService.GetUserByIdAsync(model.Id);
-            if (user == null)
+            if(!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState.Values.SelectMany(v => v.Errors));
             }
 
-            user.UserName = model.Name;
-            user.Email = model.Email;
-
-            var result = await _userService.UpdateUserAsync(user);
-            if (result.Succeeded)
+            var result = await _userService.UpdateUserAsync(new User()
             {
-                await this._identityAuthService.SignOutAsync();
-                return base.Ok();
-        
+                Email = model.Email,
+                UserName = model.Name
+            });
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
             }
 
-            return BadRequest(result.Errors);
+            var jwt = HttpContext.Request.Headers.Authorization.FirstOrDefault();
+
+            await _identityAuthService.SignOutAsync(jwt: jwt!, refresh: refresh);
+            return Ok();
+        }       
+        catch(ArgumentException exception)
+        {   
+            return BadRequest(exception.Message);
         }
-
-        return BadRequest(ModelState);
+        catch(Exception exception)
+        {
+            return this.InternalServerError(exception.Message);
+        }
     }
 
     // [HttpPost]
