@@ -9,8 +9,9 @@ public interface IUserService
 {
     Task<IdentityResult> CreateUserAsync(User user, string password);
 
-    Task<IList<string>> GetRolesByUsernameAsync(string username);
     Task<User> GetUserByIdAsync(string userId);
+
+    Task<IList<string>> GetRolesByUsernameAsync(string username);
 
     Task<User> GetUserByUsernameAsync(string username);
 
@@ -19,5 +20,6 @@ public interface IUserService
     Task<IdentityResult> DeleteUserAsync(string userId);
 
     Task<IdentityResult> AddUserClaimAsync(User user, Claim claim);
+
     Task<bool> HasRegisteredUsers();
 }

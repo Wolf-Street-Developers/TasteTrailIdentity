@@ -17,4 +17,8 @@ public interface IAdminService
     Task<IdentityResult> AssignRoleToUserAsync(string userId, UserRoles role);
 
     Task<IdentityResult> RemoveRoleFromUserAsync(string userId, UserRoles role);
+
+    Task<IList<string>> GetRolesByUsernameAsync(string username);
+
+    Task<IList<User>> GetAllAsync();
 }

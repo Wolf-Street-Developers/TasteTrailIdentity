@@ -22,37 +22,6 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [HttpGet("/api/[controller]")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetAllAsync()
-    {
-        try
-        {
-            var users = await _userService.GetAllAsync();
-
-            var userDtos = new List<UserDto>();
-
-            foreach (var user in users)
-            {
-                var roles = await _userService.GetRolesByUsernameAsync(user.UserName!);
-
-                var userDto = new UserDto()
-                {
-                    User = user,
-                    Roles = roles
-                };
-
-                userDtos.Add(userDto);
-            }
-
-            return Ok(userDtos);
-        }
-        catch(Exception exception)
-        {
-            return this.InternalServerError(exception.Message);
-        }
-    }
-
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserRolesAsync(string id)
@@ -60,7 +29,7 @@ public class UserController : ControllerBase
         try
         {
             var user = await _userService.GetUserByIdAsync(id);
-            var roles = await _userService.GetRolesByIdAsync(id);
+            var roles = await _userService.GetRolesByUsernameAsync(id);
 
             var userDto = new UserDto()
             {
@@ -117,98 +86,11 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPost]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> AssignRoleAsync([FromQuery] string userId, [FromQuery] UserRoles role)
-    {
-        try
-        {
-            var result = await _userService.AssignRoleToUserAsync(userId, role);
-            return result.Succeeded ? Ok() : BadRequest(result.Errors);
-        }
-        catch(ArgumentException exception)
-        {   
-            return BadRequest(exception.Message);
-        }
-        catch(Exception exception)
-        {
-            return this.InternalServerError(exception.Message);
-        }
-    }
 
-    [HttpPost]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> RemoveRoleAsync([FromQuery] string username, [FromQuery] UserRoles role)
-    {
-        try
-        {
-            var result = await _userService.RemoveRoleFromUserAsync(username, role);
-            return result.Succeeded ? Ok() : BadRequest(result.Errors);
-        }
-        catch(ArgumentException exception)
-        {   
-            return BadRequest(exception.Message);
-        }
-        catch(Exception exception)
-        {
-            return this.InternalServerError(exception.Message);
-        }
-    }
 
-    [HttpPost("{userId}")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> ToggleMuteAsync(string userId)
-    {
-        try
-        {
-            var result = await _userService.ToggleMuteUser(userId);
-            return result.Succeeded ? Ok() : BadRequest(result.Errors);
-        }
-        catch(ArgumentException exception)
-        {   
-            return BadRequest(exception.Message);
-        }
-        catch(Exception exception)
-        {
-            return this.InternalServerError(exception.Message);
-        }
-    }
 
-    [HttpPost("{userId}")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> ToggleBanAsync(string userId)
-    {
-        try
-        {
-            var result = await _userService.ToggleBanUser(userId);
-            return result.Succeeded ? Ok() : BadRequest(result.Errors);
-        }
-        catch(ArgumentException exception)
-        {   
-            return BadRequest(exception.Message);
-        }
-        catch(Exception exception)
-        {
-            return this.InternalServerError(exception.Message);
-        }
-    }
 
-    [HttpGet("/api/[controller]/{userId}")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetUserInfoAsync(string userId)
-    {
-        try
-        {
-            var user = await _userService.GetUserByIdAsync(userId);
-            return Ok(user);
-        }
-        catch(ArgumentException exception)
-        {   
-            return BadRequest(exception.Message);
-        }
-        catch(Exception exception)
-        {
-            return this.InternalServerError(exception.Message);
-        }
-    }
+
+
+
 }
