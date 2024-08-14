@@ -41,6 +41,16 @@ public class AdminService : IAdminService
         return await _userManager.AddToRoleAsync(user, roleName);
     }
 
+    public async Task<IEnumerable<User>> GetAllAsync()
+    {
+        return _userManager.Users;
+    }
+
+    public Task<IEnumerable<string>> GetRolesByUsernameAsync(string username)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<User> GetUserByIdAsync(string userId)
     {
         var user = await _userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"cannot find user with id: {userId}");

@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TasteTrailData.Api.Common.Extensions.Controllers;
-using TasteTrailData.Core.Venues.Models;
 using TasteTrailIdentityManager.Core.Common.Admin.Services;
 using TasteTrailIdentityManager.Core.Roles.Enums;
-using TasteTrailIdentityManager.Core.Users.Services;
 using TasteTrailIdentityManager.Infrastructure.Common.Dtos;
 using TasteTrailIdentityManager.Infrastructure.Users.Dtos;
 
@@ -145,7 +139,7 @@ public class AdminPanelController : ControllerBase
         }
     }
 
-    [HttpGet("/api/[controller]/{userId}")]
+    [HttpGet("/api/[controller]/User/{userId}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetUserInfoAsync(string userId)
     {
@@ -164,7 +158,7 @@ public class AdminPanelController : ControllerBase
         }
     }
 
-      [HttpGet("/api/[controller]")]
+      [HttpGet("/api/[controller]/User")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAllAsync()
     {
@@ -181,7 +175,7 @@ public class AdminPanelController : ControllerBase
                 var userDto = new UserDto()
                 {
                     User = user,
-                    Roles = roles
+                    Roles = roles.ToList()
                 };
 
                 userDtos.Add(userDto);

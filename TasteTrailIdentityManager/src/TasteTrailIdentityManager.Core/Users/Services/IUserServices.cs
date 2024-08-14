@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using TasteTrailData.Core.Users.Models;
-using TasteTrailIdentityManager.Core.Roles.Enums;
 
 namespace TasteTrailIdentityManager.Core.Users.Services;
 
@@ -9,9 +8,9 @@ public interface IUserService
 {
     Task<IdentityResult> CreateUserAsync(User user, string password);
 
-    Task<User> GetUserByIdAsync(string userId);
-
     Task<IList<string>> GetRolesByUsernameAsync(string username);
+
+    Task<User> GetUserByIdAsync(string userId);
 
     Task<User> GetUserByUsernameAsync(string username);
 
@@ -19,7 +18,10 @@ public interface IUserService
 
     Task<IdentityResult> DeleteUserAsync(string userId);
 
+    Task<bool> HasRegisteredUsers();
+
+    Task<IEnumerable<Claim>> GetUserClaimsAsync(User user);
+
     Task<IdentityResult> AddUserClaimAsync(User user, Claim claim);
 
-    Task<bool> HasRegisteredUsers();
 }
