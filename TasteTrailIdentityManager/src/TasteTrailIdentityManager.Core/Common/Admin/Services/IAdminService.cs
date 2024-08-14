@@ -8,7 +8,9 @@ public interface IAdminService
 {
     Task<IdentityResult> AssignRoleToUserAsync(string userId, UserRoles role);
 
-    Task<IEnumerable<User>> GetAllAsync();
+    Task<IEnumerable<User>> GetUsersByCountAsync(int count);
+
+    Task<User> GetUserByUsernameAsync(string username);
 
     Task<IEnumerable<string>> GetRolesByUsernameAsync(string username);
 

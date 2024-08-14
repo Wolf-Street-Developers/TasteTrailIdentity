@@ -160,11 +160,11 @@ public class AdminPanelController : ControllerBase
 
       [HttpGet("/api/[controller]/User")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetAllAsync()
+    public async Task<IActionResult> GetAllAsync([FromQuery]int count)
     {
         try
         {
-            var users = await _adminService.GetAllAsync();
+            var users = await _adminService.GetUsersByCountAsync(count);
 
             var userDtos = new List<UserDto>();
 
