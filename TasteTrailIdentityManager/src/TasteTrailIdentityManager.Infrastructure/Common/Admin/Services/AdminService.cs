@@ -41,9 +41,14 @@ public class AdminService : IAdminService
         return await _userManager.AddToRoleAsync(user, roleName);
     }
 
-    public async Task<IEnumerable<User>> GetUsersByCountAsync(int count)
+    public async Task<IEnumerable<User>> GetFromToUsersAsync(int from, int to)
     {
-        return await _context.Users.Take(count).ToListAsync();
+        if(to <= 0 || from < 0 || to <= from)
+        {
+            throw new ArgumentException("invali index or wrong sequence");
+        }
+
+        return await _context.Users.Skip(from).Take(to - from + 1).ToListAsync();
     }
 
     public async Task<User> GetUserByUsernameAsync(string username)
