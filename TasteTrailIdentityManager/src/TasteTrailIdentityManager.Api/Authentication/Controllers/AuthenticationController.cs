@@ -25,7 +25,7 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> LoginAsync([Required, FromForm] LoginDto loginDto)
+    public async Task<IActionResult> LoginAsync([Required, FromBody] LoginDto loginDto)
     {
         try
         {
@@ -51,7 +51,7 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> RegistrationAsync([Required, FromForm] RegistrationDto registrationDto)
+    public async Task<IActionResult> RegistrationAsync([Required, FromBody] RegistrationDto registrationDto)
     {
         try
         {
