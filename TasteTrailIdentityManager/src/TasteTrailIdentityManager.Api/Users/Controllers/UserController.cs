@@ -60,7 +60,7 @@ public class UserController : ControllerBase
         try
         {
             var user = await _userService.GetUserByIdAsync(id);
-            var roles = await _userService.GetRolesByUsernameAsync(user.UserName!);
+            var roles = await _userService.GetRolesByIdAsync(id);
 
             var userDto = new UserDto()
             {

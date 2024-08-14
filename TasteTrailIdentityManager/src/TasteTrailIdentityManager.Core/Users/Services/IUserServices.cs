@@ -9,7 +9,6 @@ public interface IUserService
 {
     Task<IdentityResult> CreateUserAsync(User user, string password);
 
-    Task<IEnumerable<User>> GetAllAsync();
     Task<IList<string>> GetRolesByUsernameAsync(string username);
     Task<User> GetUserByIdAsync(string userId);
 
@@ -19,15 +18,6 @@ public interface IUserService
 
     Task<IdentityResult> DeleteUserAsync(string userId);
 
-    Task<IdentityResult> AssignRoleToUserAsync(string userId, UserRoles role);
-
-    Task<IdentityResult> RemoveRoleFromUserAsync(string userId, UserRoles role);
-
     Task<IdentityResult> AddUserClaimAsync(User user, Claim claim);
-
-    Task<IdentityResult> ToggleBanUser(string userId);
-
-    Task<IdentityResult> ToggleMuteUser(string userId);
-
     Task<bool> HasRegisteredUsers();
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TasteTrailData.Core.Roles.Models;
 using TasteTrailData.Core.Users.Models;
+using TasteTrailData.Infrastructure.Common.Data;
 using TasteTrailIdentityManager.Core.Roles.Enums;
 using TasteTrailIdentityManager.Core.Users.Services;
 
