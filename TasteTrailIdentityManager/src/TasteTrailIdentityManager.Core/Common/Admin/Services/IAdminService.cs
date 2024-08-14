@@ -6,9 +6,7 @@ namespace TasteTrailIdentityManager.Core.Common.Admin.Services;
 
 public interface IAdminService
 {
-    Task<User> GetUsersTotal();
-
-    Task<IEnumerable<User>> GetAllAsync();
+    Task<IEnumerable<User>> GetUsersTotal();
 
     Task<User> GetUserByIdAsync(string userId);
 
