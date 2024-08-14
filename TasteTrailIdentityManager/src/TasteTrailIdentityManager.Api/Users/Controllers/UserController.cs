@@ -1,4 +1,3 @@
-using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TasteTrailData.Api.Common.Extensions.Controllers;
@@ -83,7 +82,7 @@ public class UserController : ControllerBase
 
     [HttpPut("/api/[controller]/{id}")]
     [Authorize]
-    public async Task<IActionResult> UpdateAsync([FromQuery] UpdateUserDto model, [FromQuery] Guid refresh)
+    public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserDto model, [FromQuery] Guid refresh)
     {
         try
         {
