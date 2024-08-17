@@ -32,6 +32,6 @@ app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors("LocalHostPolicy");
+app.UseCors("BlazorPolicy");
 
 app.Run();
