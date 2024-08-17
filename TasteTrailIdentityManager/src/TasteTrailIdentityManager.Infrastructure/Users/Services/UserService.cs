@@ -39,6 +39,13 @@ public class UserService : IUserService
         return user;
     }
 
+    public async Task<User> GetUserByEmailAsync(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new ArgumentException($"cannot find user with email: {email}"); 
+
+        return user;
+    }
+
     public async Task<IdentityResult> UpdateUserAsync(User user)
     {
         _ = await _userManager.FindByIdAsync(user.Id) ?? throw new ArgumentException($"cannot find user with id: {user.Id}");
