@@ -47,6 +47,7 @@ public class IdentityAuthService : IIdentityAuthService
 
         var result = creationResult.Succeeded && roleAssignResult.Succeeded;
 
+
         var errors = new List<IdentityError>();
 
         errors.AddRange(creationResult.Errors);

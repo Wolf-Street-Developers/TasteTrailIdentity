@@ -35,7 +35,8 @@ public class AdminService : IAdminService
 
         var roles = await _userManager.GetRolesAsync(user);
 
-        if (_userManager.RemoveFromRolesAsync(user, roles).Result.Succeeded)
+        var roleRemoveResult = await _userManager.RemoveFromRolesAsync(user, roles);
+        if (!roleRemoveResult.Succeeded)
             return IdentityResult.Failed(new IdentityError { Description = $"Cannot rewrite roles." });
 
         return await _userManager.AddToRoleAsync(user, roleName);
