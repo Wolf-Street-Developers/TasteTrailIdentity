@@ -34,7 +34,7 @@ public class UserService : IUserService
 
     public async Task<User> GetUserByUsernameAsync(string username)
     {
-        var user = await _userManager.FindByNameAsync(username) ?? throw new ArgumentException($"cannot find user with username: {username}");
+        var user = await _userManager.FindByNameAsync(username) ?? throw new ArgumentException($"cannot find user with username: {username}"); 
 
         return user;
     }

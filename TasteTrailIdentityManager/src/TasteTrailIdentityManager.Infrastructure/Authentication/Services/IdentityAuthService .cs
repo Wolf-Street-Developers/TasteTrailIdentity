@@ -56,14 +56,15 @@ public class IdentityAuthService : IIdentityAuthService
         return result ? IdentityResult.Success : IdentityResult.Failed(errors.ToArray());
     }
 
-    public async Task<AccessToken> SignInAsync(string username, string password, bool rememberMe)
+    public async Task<AccessToken> SignInAsync(string identifier, string password, bool rememberMe)
     {
-        var user = await _userService.GetUserByUsernameAsync(username);
+
+        var user = IsValidEmail(identifier) ? await _userService.Get : _userService.GetUserByUsernameAsync(username) ;
 
         if(user == null)
             throw new InvalidCredentialException("User not found!");
 
-        var result = await _signInManager.PasswordSignInAsync(username, password, rememberMe, lockoutOnFailure: false);
+        var result = await _signInManager.PasswordSignInAsync(user, password, rememberMe, lockoutOnFailure: false);
 
         if (user.IsBanned)
             throw new AuthenticationFailureException("Account is banned!");
@@ -246,4 +247,20 @@ public class IdentityAuthService : IIdentityAuthService
         return await _refreshTokenService.DeleteByIdAsync(refresh);
     }
 
+
+    private static bool IsValidEmail(string email)
+    {
+        var trimmedEmail = email.Trim();
+
+        if (trimmedEmail.EndsWith(".")) {
+            return false; 
+        }
+        try {
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == trimmedEmail;
+        }
+        catch {
+            return false;
+        }
+    }
 }
