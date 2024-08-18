@@ -58,8 +58,8 @@ public class IdentityAuthService : IIdentityAuthService
 
     public async Task<AccessToken> SignInAsync(string identifier, string password, bool rememberMe)
     {
-
-        var user = IsValidEmail(identifier) ? await _userService.Get : _userService.GetUserByUsernameAsync(username) ;
+        var isEmail = IsValidEmail(identifier);
+        var user = isEmail ? await _userService.GetUserByEmailAsync(identifier) : await _userService.GetUserByUsernameAsync(identifier) ;
 
         if(user == null)
             throw new InvalidCredentialException("User not found!");
@@ -74,7 +74,7 @@ public class IdentityAuthService : IIdentityAuthService
 
         await _userService.AddUserClaimAsync(user, new Claim("IsMuted", user.IsMuted.ToString()));
 
-        var roles = await _userService.GetRolesByUsernameAsync(username);
+        var roles = isEmail ? await _userService.GetRolesByEmailAsync(identifier) : await _userService.GetRolesByUsernameAsync(identifier);
 
         var claims = roles
             .Select(roleStr => new Claim(ClaimTypes.Role, roleStr))

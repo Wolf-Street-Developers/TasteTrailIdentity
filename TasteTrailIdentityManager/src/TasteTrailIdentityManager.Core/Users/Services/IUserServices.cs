@@ -10,6 +10,8 @@ public interface IUserService
 
     Task<IList<string>> GetRolesByUsernameAsync(string username);
 
+    Task<IList<string>> GetRolesByEmailAsync(string email);
+
     Task<User> GetUserByIdAsync(string userId);
 
     Task<User> GetUserByUsernameAsync(string username);
