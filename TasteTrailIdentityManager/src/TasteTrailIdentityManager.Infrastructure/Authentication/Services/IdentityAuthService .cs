@@ -14,6 +14,7 @@ using TasteTrailIdentityManager.Core.Common.Tokens.RefreshTokens.Services;
 using TasteTrailIdentityManager.Core.Roles.Enums;
 using TasteTrailIdentityManager.Core.Users.Services;
 using TasteTrailIdentityManager.Infrastructure.Common.Options;
+using TasteTrailIdentityManager.Infrastructure.Common.Extensions.IdentityAuthService;
 
 namespace TasteTrailIdentityManager.Infrastructure.Authentication.Services;
 
@@ -58,7 +59,7 @@ public class IdentityAuthService : IIdentityAuthService
 
     public async Task<AccessToken> SignInAsync(string identifier, string password, bool rememberMe)
     {
-        var isEmail = IsValidEmail(identifier);
+        var isEmail = this.IsValidEmail(identifier);
         var user = isEmail ? await _userService.GetUserByEmailAsync(identifier) : await _userService.GetUserByUsernameAsync(identifier) ;
 
         if(user == null)
@@ -248,20 +249,4 @@ public class IdentityAuthService : IIdentityAuthService
         return await _refreshTokenService.DeleteByIdAsync(refresh);
     }
 
-
-    private static bool IsValidEmail(string email)
-    {
-        var trimmedEmail = email.Trim();
-
-        if (trimmedEmail.EndsWith(".")) {
-            return false; 
-        }
-        try {
-            var addr = new System.Net.Mail.MailAddress(email);
-            return addr.Address == trimmedEmail;
-        }
-        catch {
-            return false;
-        }
-    }
 }
