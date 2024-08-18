@@ -29,7 +29,7 @@ public class AuthenticationController : ControllerBase
     {
         try
         {
-            var accessToken = await identityAuthService.SignInAsync(loginDto.Username, loginDto.Password, true);
+            var accessToken = await identityAuthService.SignInAsync(loginDto.LoginIdentifier, loginDto.Password, true);
             return Ok(accessToken);
         }
         catch(InvalidCredentialException exeption)

@@ -72,7 +72,8 @@ public class IdentityAuthService : IIdentityAuthService
         if (!result.Succeeded)
             throw new InvalidCredentialException("Invalid credentials!");
 
-        await _userService.AddUserClaimAsync(user, new Claim("IsMuted", user.IsMuted.ToString()));
+        if(user.IsMuted)
+            await _userService.AddUserClaimAsync(user, new Claim("IsMuted", user.IsMuted.ToString()));
 
         var roles = isEmail ? await _userService.GetRolesByEmailAsync(identifier) : await _userService.GetRolesByUsernameAsync(identifier);
 

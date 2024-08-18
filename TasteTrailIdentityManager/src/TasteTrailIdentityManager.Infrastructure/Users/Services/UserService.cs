@@ -81,6 +81,6 @@ public class UserService : IUserService
         var existingClaim = (await _userManager.GetClaimsAsync(user))
                 .FirstOrDefault(c => c.Type == claim.Type);
 
-        return existingClaim is null ? await _userManager.AddClaimAsync(user, claim) : throw new ArgumentException($"this claim is already exists!");
+        return existingClaim is null ? await _userManager.AddClaimAsync(user, claim) : throw new ArgumentException($"user {user.Email} already has this claim!");
     }
 }
