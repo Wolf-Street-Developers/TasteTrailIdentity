@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TasteTrailData.Api.Common.Extensions.Controllers;
@@ -28,7 +29,7 @@ public class UserController : ControllerBase
         try
         {
             var user = await _userService.GetUserByIdAsync(id);
-            var roles = await _userService.GetRolesByUsernameAsync(id);
+            var roles = await _userService.GetRolesByUsernameAsync(user.UserName!);
 
             var userDto = new UserDto()
             {
