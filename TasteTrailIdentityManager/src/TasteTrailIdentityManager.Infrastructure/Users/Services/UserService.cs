@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TasteTrailData.Core.Users.Models;
+using TasteTrailIdentityManager.Core.Common.Tokens.RefreshTokens.Services;
 using TasteTrailIdentityManager.Core.Users.Services;
 
 namespace TasteTrailIdentityManager.Infrastructure.Users.Services;
@@ -10,9 +11,12 @@ public class UserService : IUserService
 {
     private readonly UserManager<User> _userManager;
 
-    public UserService(UserManager<User> userManager)
+    private readonly IRefreshTokenService _refreshService;
+
+    public UserService(UserManager<User> userManager, IRefreshTokenService refreshService)
     {
         _userManager = userManager;
+        _refreshService = refreshService;
     }
 
     public async Task<IdentityResult> CreateUserAsync(User user, string password)
@@ -52,11 +56,21 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<IdentityResult> UpdateUserAsync(User user)
+    public async Task<IdentityResult> UpdateUserAsync(User user, Guid refresh)
     {
-        _ = await _userManager.FindByIdAsync(user.Id) ?? throw new ArgumentException($"cannot find user with id: {user.Id}");
+        var userToChange = await _userManager.FindByIdAsync(user.Id) ?? throw new ArgumentException($"cannot find user with id: {user.Id}");
 
-        return await _userManager.UpdateAsync(user);
+        userToChange.Email = user.Email;
+        userToChange.UserName = user.UserName;
+
+        var refreshToken = await _refreshService.GetByIdAsync(refresh) ?? throw new ArgumentException("Wrong refresh");
+
+        if(refreshToken.UserId != user.Id)
+        {
+            throw new ArgumentException($"user with id {user.Id} doesn't possess refresh {refresh}");
+        }
+
+        return await _userManager.UpdateAsync(userToChange);
     }
 
     public async Task<IdentityResult> DeleteUserAsync(string userId)

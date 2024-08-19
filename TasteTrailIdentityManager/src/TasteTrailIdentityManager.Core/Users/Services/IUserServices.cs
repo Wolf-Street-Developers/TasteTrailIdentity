@@ -18,7 +18,7 @@ public interface IUserService
 
     Task<User> GetUserByEmailAsync(string email);
 
-    Task<IdentityResult> UpdateUserAsync(User user);
+    Task<IdentityResult> UpdateUserAsync(User user, Guid refresh);
 
     Task<IdentityResult> DeleteUserAsync(string userId);
 

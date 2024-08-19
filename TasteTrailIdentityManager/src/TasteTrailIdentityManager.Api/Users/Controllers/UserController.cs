@@ -62,9 +62,10 @@ public class UserController : ControllerBase
 
             var result = await _userService.UpdateUserAsync(new User()
             {
+                Id = model.Id,
                 Email = model.Email,
                 UserName = model.Name
-            });
+            }, refresh);
 
             if (!result.Succeeded)
             {

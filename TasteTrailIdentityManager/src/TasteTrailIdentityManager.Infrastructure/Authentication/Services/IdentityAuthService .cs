@@ -206,6 +206,8 @@ public class IdentityAuthService : IIdentityAuthService
             throw new InvalidCredentialException("jwt is null!");
         }
 
+        var refreshToken = await _refreshTokenService.GetByIdAsync(refresh) ?? throw new ArgumentException("Wrong refresh");
+
         if(jwt.StartsWith("Bearer ")) {
             jwt = jwt.Substring("Bearer ".Length);
         }
@@ -239,6 +241,11 @@ public class IdentityAuthService : IIdentityAuthService
         }
 
         var userId = idClaim.Value;
+
+        if(refreshToken.UserId != userId)
+        {
+            throw new ArgumentException($"user with id {userId} doesn't possess refresh {refresh}");
+        }
 
         var foundUser = await _userService.GetUserByIdAsync(userId);
 

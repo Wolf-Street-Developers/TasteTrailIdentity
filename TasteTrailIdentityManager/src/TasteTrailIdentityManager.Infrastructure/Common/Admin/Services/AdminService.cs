@@ -33,12 +33,6 @@ public class AdminService : IAdminService
         if (!await _roleManager.RoleExistsAsync(roleName))
             return IdentityResult.Failed(new IdentityError { Description = $"Role {roleName} not found." });
 
-        var roles = await _userManager.GetRolesAsync(user);
-
-        var roleRemoveResult = await _userManager.RemoveFromRolesAsync(user, roles);
-        if (!roleRemoveResult.Succeeded)
-            return IdentityResult.Failed(new IdentityError { Description = $"Cannot rewrite roles." });
-
         return await _userManager.AddToRoleAsync(user, roleName);
     }
 
