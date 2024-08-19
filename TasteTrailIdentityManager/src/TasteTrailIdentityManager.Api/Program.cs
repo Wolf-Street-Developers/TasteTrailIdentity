@@ -9,7 +9,6 @@ builder.Services.InitAuth(builder.Configuration);
 builder.Services.InitSwagger();
 builder.Services.InitCors();
 builder.Services.RegisterDependencyInjection();
-builder.Services.AddValidators();
 builder.Services.AddMediatR();
 
 

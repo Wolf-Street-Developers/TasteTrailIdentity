@@ -67,7 +67,7 @@ public class AdminService : IAdminService
         return user;
     }
 
-    public async Task<int> GetUserCount()
+    public async Task<int> GetUsersCount()
     {
         return _context.Users.Count();
     }

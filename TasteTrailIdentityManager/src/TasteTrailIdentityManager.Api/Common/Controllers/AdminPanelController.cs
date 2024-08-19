@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using TasteTrailData.Api.Common.Extensions.Controllers;
 using TasteTrailIdentityManager.Core.Common.Admin.Services;
 using TasteTrailIdentityManager.Core.Roles.Enums;
-using TasteTrailIdentityManager.Infrastructure.Common.Dtos;
 using TasteTrailIdentityManager.Infrastructure.Users.Dtos;
 
 namespace TasteTrailIdentityManager.Api.Common.Controllers;
@@ -21,37 +20,15 @@ public class AdminPanelController : ControllerBase
 
     [Authorize(Roles = "Admin")]
     [HttpGet]
-    public async Task<IActionResult> DashboardInfoAsync()
+    public async Task<IActionResult> GetUsersCount()
     {
         try
         {
-            var users = await _adminService.GetUsersTotal();
-            int feedbacks = 0;
-            int venues = 0;
+            var usersCount = await _adminService.GetUsersCount();
 
-            foreach (var user in users)
-            {
-                if(user.Feedbacks.Count() == 0)
-                {
-                    continue;
-                }
-                feedbacks += user.Feedbacks.Count();
-
-                if(user.Venues.Count() == 0)
-                {
-                    continue;
-                }
-                feedbacks += user.Venues.Count();
-            }
-
-            var dto = new AdminDashboardDto
-            {
-                TotalUsers = users.Count(),
-                TotalFeedbacks = feedbacks,
-                TotalVenues = venues
-            };
-
-            return Ok(dto);
+            return Ok(new {
+                usersCount = usersCount
+            });
         }
         catch(ArgumentException exception)
         {   
