@@ -16,7 +16,7 @@ public interface IAdminService
 
     Task<User> GetUserByIdAsync(string userId);
 
-    Task<IEnumerable<User>> GetUsersTotal();
+    Task<int> GetUsersTotal();
 
     Task<IdentityResult> RemoveRoleFromUserAsync(string userId, UserRoles role);
 
