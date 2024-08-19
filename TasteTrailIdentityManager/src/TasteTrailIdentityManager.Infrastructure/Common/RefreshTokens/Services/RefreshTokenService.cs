@@ -18,8 +18,9 @@ public class RefreshTokenService : IRefreshTokenService
             throw new ArgumentException("cannot create RefreshToken due to userId is empty");
         }
 
-        entity.CreationDate = DateTime.Now;
+        entity.CreationDate = DateTime.Now.ToUniversalTime();
         entity.Token = Guid.NewGuid();
+
         return await _repository.CreateAsync(entity);
     }
 

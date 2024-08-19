@@ -98,14 +98,12 @@ public class IdentityAuthService : IIdentityAuthService
         var handler = new JwtSecurityTokenHandler();
         var tokenStr = handler.WriteToken(token);
 
-        var refreshToken = new RefreshToken {
+        var refresh = await _refreshTokenService.CreateAsync(new RefreshToken {
             UserId = user.Id,
-        };
-
-        await _refreshTokenService.CreateAsync(refreshToken);
+        });
 
         return new AccessToken{
-            Refresh = refreshToken.Token,
+            Refresh = refresh,
             Jwt = tokenStr,
         };
     }
@@ -169,8 +167,7 @@ public class IdentityAuthService : IIdentityAuthService
         await _refreshTokenService.DeleteByIdAsync(refresh);
 
         var newRefreshToken = await _refreshTokenService.CreateAsync(new RefreshToken{
-            Token = Guid.NewGuid(),
-            UserId = userId
+            UserId = userId,
         }) ;
 
         var roles = await _userService.GetRolesByUsernameAsync(foundUser.UserName!);
