@@ -74,7 +74,7 @@ public class AdminService : IAdminService
 
     public async Task<IdentityResult> RemoveRoleFromUserAsync(string userId, UserRoles role)
     {
-        var user = await _userManager.FindByNameAsync(userId) ?? throw new ArgumentException($"cannot find user with id: {userId}");
+        var user = await _userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"cannot find user with id: {userId}");
         var roleName = role.ToString();
 
         if (!await _roleManager.RoleExistsAsync(roleName))

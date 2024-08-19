@@ -61,11 +61,11 @@ public class AdminPanelController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> RemoveRoleAsync([FromQuery] string username, [FromQuery] UserRoles role)
+    public async Task<IActionResult> RemoveRoleAsync([FromQuery] string userId, [FromQuery] UserRoles role)
     {
         try
         {
-            var result = await _adminService.RemoveRoleFromUserAsync(username, role);
+            var result = await _adminService.RemoveRoleFromUserAsync(userId: userId, role);
             return result.Succeeded ? Ok() : BadRequest(result.Errors);
         }
         catch(ArgumentException exception)
