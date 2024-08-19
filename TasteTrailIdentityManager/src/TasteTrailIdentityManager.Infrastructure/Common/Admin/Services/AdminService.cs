@@ -17,7 +17,7 @@ public class AdminService : IAdminService
 
     private readonly RoleManager<Role> _roleManager;
 
-        private readonly TasteTrailDbContext _context;
+    private readonly TasteTrailDbContext _context;
 
     public AdminService(UserManager<User> userManager, RoleManager<Role> roleManager, TasteTrailDbContext context)
     {
@@ -67,9 +67,9 @@ public class AdminService : IAdminService
         return user;
     }
 
-    public async Task<IEnumerable<User>> GetUsersTotal()
+    public async Task<int> GetUserCount()
     {
-        return _context.Users.Include(u => u.Feedbacks).Include(u => u.Venues);
+        return _context.Users.Count();
     }
 
     public async Task<IdentityResult> RemoveRoleFromUserAsync(string userId, UserRoles role)
