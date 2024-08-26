@@ -2,10 +2,12 @@ using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TasteTrailData.Api.Common.Extensions.Controllers;
+using TasteTrailData.Core.Common.Managers.ImageManagers;
 using TasteTrailData.Core.Users.Models;
 using TasteTrailIdentityManager.Core.Authentication.Services;
 using TasteTrailIdentityManager.Core.Users.Services;
 using TasteTrailIdentityManager.Infrastructure.Users.Dtos;
+using TasteTrailIdentityManager.Core.Users.Managers;
 
 namespace TasteTrailIdentityManager.Api.Users.Controllers;
 
@@ -14,12 +16,14 @@ namespace TasteTrailIdentityManager.Api.Users.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IUserImageManager _userImageManager;
     private readonly IIdentityAuthService _identityAuthService;
 
-    public UserController(IIdentityAuthService identityAuthService, IUserService userService)
+    public UserController(IIdentityAuthService identityAuthService, IUserService userService, IUserImageManager userImageManager)
     {
         _identityAuthService = identityAuthService;
         _userService = userService;
+        _userImageManager = userImageManager;
     }
 
 
@@ -49,9 +53,9 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPut("/api/[controller]/{id}")]
+    [HttpPut("/api/[controller]/{refresh}")]
     [Authorize]
-    public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserDto model, [FromQuery] Guid refresh)
+    public async Task<IActionResult> UpdateAsync([FromBody]UpdateUserDto model, [FromQuery] Guid refresh)
     {
         try
         {
@@ -87,7 +91,31 @@ public class UserController : ControllerBase
         }
     }
 
+    [HttpPatch("/api/[controller]/Avatar/{id}")]
+    [Authorize]
+    public async Task<IActionResult> UpdateAvatarAsync(string id, IFormFile? avatar)
+    {
+        try
+        {
+            var avatarUrlPath = await _userImageManager.SetImageAsync(id, avatar);
 
+            return Ok(new {
+                AvatarUrlPath = avatarUrlPath,
+            });
+        }       
+        catch(ArgumentException exception)
+        {   
+            return BadRequest(exception.Message);
+        }
+        catch(InvalidOperationException exception)
+        {   
+            return BadRequest(exception.Message);
+        }
+        catch(Exception exception)
+        {
+            return this.InternalServerError(exception.Message);
+        }
+    }
 
 
 

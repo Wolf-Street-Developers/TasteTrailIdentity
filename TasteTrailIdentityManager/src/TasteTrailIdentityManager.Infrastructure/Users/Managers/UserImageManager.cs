@@ -1,12 +1,12 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Http;
-using TasteTrailData.Core.Common.Managers.ImageManagers;
 using TasteTrailIdentityManager.Core.Users.Services;
+using TasteTrailIdentityManager.Core.Users.Managers;
 
 namespace TasteTrailIdentityManager.Infrastructure.Users.Managers;
 
-public class UserImageManager : IImageManager<string>
+public class UserImageManager : IUserImageManager
 {
     private readonly IUserService _userService;
     private readonly BlobServiceClient _blobServiceClient;

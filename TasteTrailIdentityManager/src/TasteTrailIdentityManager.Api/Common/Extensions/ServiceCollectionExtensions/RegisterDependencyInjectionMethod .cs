@@ -5,12 +5,14 @@ using TasteTrailIdentityManager.Core.Common.Admin.Services;
 using TasteTrailIdentityManager.Core.Common.Tokens.RefreshTokens.Repositories;
 using TasteTrailIdentityManager.Core.Common.Tokens.RefreshTokens.Services;
 using TasteTrailIdentityManager.Core.Roles.Services;
+using TasteTrailIdentityManager.Core.Users.Managers;
 using TasteTrailIdentityManager.Core.Users.Services;
 using TasteTrailIdentityManager.Infrastructure.Authentication.Services;
 using TasteTrailIdentityManager.Infrastructure.Common.Admin.Services;
 using TasteTrailIdentityManager.Infrastructure.Common.RefreshTokens.Repositories.Ef_Core;
 using TasteTrailIdentityManager.Infrastructure.Common.RefreshTokens.Services;
 using TasteTrailIdentityManager.Infrastructure.Roles.Services;
+using TasteTrailIdentityManager.Infrastructure.Users.Managers;
 using TasteTrailIdentityManager.Infrastructure.Users.Services;
 
 public static class RegisterDependencyInjectionMethod 
@@ -24,5 +26,7 @@ public static class RegisterDependencyInjectionMethod
 
         serviceCollection.AddTransient<IRefreshTokenRepository, RefreshTokenEfCoreRepository>();
         serviceCollection.AddTransient<IRefreshTokenService, RefreshTokenService>();
+
+        serviceCollection.AddTransient<IUserImageManager, UserImageManager>();
     } 
 }
