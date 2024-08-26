@@ -79,8 +79,24 @@ public class AdminService : IAdminService
 
         if (!await _roleManager.RoleExistsAsync(roleName))
             return IdentityResult.Failed(new IdentityError { Description = $"Role {roleName} not found." });
+        
+        var rolesBeforeRemoval = await _userManager.GetRolesAsync(user);
 
-        return await _userManager.RemoveFromRoleAsync(user, roleName);
+        if(rolesBeforeRemoval.Count == 1 && rolesBeforeRemoval.First() == UserRoles.User.ToString())
+        {
+            return IdentityResult.Failed(new IdentityError { Description = $"You cannot delete default role." });
+        }
+
+        var removeResult = await _userManager.RemoveFromRoleAsync(user, roleName);
+
+        var rolesAfterRemoval = await _userManager.GetRolesAsync(user);
+
+        if(rolesAfterRemoval.Count == 0)
+        {
+            _ = await _userManager.AddToRoleAsync(user, UserRoles.User.ToString());
+        }
+
+        return removeResult;
     }
 
     public async Task<IdentityResult> ToggleBanUser(string userId)

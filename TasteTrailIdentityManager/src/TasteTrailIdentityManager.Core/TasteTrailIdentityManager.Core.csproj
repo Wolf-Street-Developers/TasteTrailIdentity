@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TasteTrailData" Version="2.1.3" />
+    <PackageReference Include="TasteTrailData" Version="3.0.1" />
   </ItemGroup>
 
 </Project>
