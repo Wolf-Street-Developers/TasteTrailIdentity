@@ -97,4 +97,17 @@ public class UserService : IUserService
 
         return existingClaim is null ? await _userManager.AddClaimAsync(user, claim) : throw new ArgumentException($"user {user.Email} already has this claim!");
     }
+
+    public async Task PatchAvatarUrlPathAsync(string userId, string avatarPath)
+    {
+        var userToChange = await _userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"cannot find user with id: {userId}");
+
+        if (string.IsNullOrWhiteSpace(avatarPath))
+        {
+            throw new ArgumentException("Logo URL path cannot be null or empty.", nameof(avatarPath));
+        }
+        userToChange.AvatarPath = avatarPath;
+
+        await _userManager.UpdateAsync(userToChange);
+    }
 }

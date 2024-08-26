@@ -28,4 +28,6 @@ public interface IUserService
 
     Task<IdentityResult> AddUserClaimAsync(User user, Claim claim);
 
+    Task PatchAvatarUrlPathAsync(string userId, string avatarUrl); 
+
 }
