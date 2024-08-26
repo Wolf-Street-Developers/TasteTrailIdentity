@@ -135,21 +135,21 @@ public class AdminPanelController : ControllerBase
         }
     }
 
-      [HttpGet("/api/[controller]/User")]
+    [HttpGet("/api/[controller]/User")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetAllAsync([FromQuery]int from, [FromQuery]int to)
+    public async Task<IActionResult> GetUsersAsync([FromQuery]int PageNumber, [FromQuery]int PageSize)
     {
         try
         {
-            var users = await _adminService.GetFromToUsersAsync(from, to);
+            var users = await _adminService.GetUsersAsync(PageNumber, PageSize);
 
-            var userDtos = new List<UserDto>();
+            var userDtos = new List<UserResponseDto>();
 
             foreach (var user in users)
             {
                 var roles = await _adminService.GetRolesByUsernameAsync(user.UserName!);
 
-                var userDto = new UserDto()
+                var userDto = new UserResponseDto()
                 {
                     User = user,
                     Roles = roles.ToList()

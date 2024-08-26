@@ -31,7 +31,7 @@ public class UserController : ControllerBase
             var user = await _userService.GetUserByIdAsync(id);
             var roles = await _userService.GetRolesByUsernameAsync(user.UserName!);
 
-            var userDto = new UserDto()
+            var userDto = new UserResponseDto()
             {
                 User = user,
                 Roles = roles

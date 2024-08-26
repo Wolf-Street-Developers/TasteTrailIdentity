@@ -2,7 +2,6 @@
 
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using TasteTrailData.Core.Roles.Models;
 using TasteTrailData.Core.Users.Models;
 using TasteTrailData.Infrastructure.Common.Data;
@@ -36,15 +35,10 @@ public class AdminService : IAdminService
         return await _userManager.AddToRoleAsync(user, roleName);
     }
 
-    public async Task<IEnumerable<User>> GetFromToUsersAsync(int from, int to, Predicate<User>? filter = null)
+    public async Task<IEnumerable<User>> GetUsersAsync(int PageNumber, int PageSize)
     {
-        if(to <= 0 || from < 0 || to <= from)
-        {
-            throw new ArgumentException("invali index or wrong sequence");
-        }
-
-        var users = filter is null ? _context.Users : _context.Users.Where(user => filter(user));
-        return await users.Skip(from).Take(to - from + 1).ToListAsync();
+        var users =  _context.Users.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList(); 
+        return users;
     }
 
     public async Task<User> GetUserByUsernameAsync(string username)
