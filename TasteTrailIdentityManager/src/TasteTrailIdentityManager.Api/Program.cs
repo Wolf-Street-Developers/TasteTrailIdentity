@@ -9,6 +9,7 @@ builder.Services.InitAuth(builder.Configuration);
 builder.Services.InitSwagger();
 builder.Services.InitCors();
 builder.Services.RegisterDependencyInjection();
+builder.Services.RegisterBlobStorage(builder.Configuration);
 builder.Services.AddMediatR();
 
 
