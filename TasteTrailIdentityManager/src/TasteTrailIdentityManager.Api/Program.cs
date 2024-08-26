@@ -31,6 +31,6 @@ app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors("BlazorPolicy");
+app.UseCors("BlazorPublishPolicy");
 
 app.Run();
