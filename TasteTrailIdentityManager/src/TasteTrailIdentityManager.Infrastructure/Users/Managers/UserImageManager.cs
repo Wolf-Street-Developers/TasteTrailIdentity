@@ -11,7 +11,7 @@ public class UserImageManager : IUserImageManager
     private readonly IUserService _userService;
     private readonly BlobServiceClient _blobServiceClient;
     private readonly string _defaultAvatarUrl;
-    private readonly string _containerName = "----";
+    private readonly string _containerName = "user-avatars";
 
     public UserImageManager(IUserService userService, BlobServiceClient blobServiceClient)
     {
@@ -42,7 +42,7 @@ public class UserImageManager : IUserImageManager
     public string GetDefaultImageUrl()
     {
         var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
-        var defaultLogoBlobName = "default-logo.png";
+        var defaultLogoBlobName = "default-avatar.png";
 
         var blobClient = containerClient.GetBlobClient(defaultLogoBlobName);
         
@@ -74,7 +74,7 @@ public class UserImageManager : IUserImageManager
         }
 
         var avatarUrl = blobClient.Uri.ToString();
-        await _userService.PatchAvatarUrlPathAsync(id, _defaultAvatarUrl);
+        await _userService.PatchAvatarUrlPathAsync(id, avatarUrl);
 
         return avatarUrl;
     }

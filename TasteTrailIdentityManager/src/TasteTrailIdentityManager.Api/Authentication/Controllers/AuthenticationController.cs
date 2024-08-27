@@ -7,6 +7,7 @@ using TasteTrailData.Core.Users.Models;
 using TasteTrailData.Api.Common.Extensions.Controllers;
 using TasteTrailIdentityManager.Core.Authentication.Services;
 using TasteTrailIdentityManager.Infrastructure.Identities.Dtos;
+using TasteTrailIdentityManager.Core.Users.Managers;
 
 namespace TasteTrailIdentityManager.Api.Controllers;
 
@@ -15,13 +16,16 @@ namespace TasteTrailIdentityManager.Api.Controllers;
 public class AuthenticationController : ControllerBase
 {
 
-    private readonly IIdentityAuthService identityAuthService;
+    private readonly IIdentityAuthService _identityAuthService;
+    private readonly IUserImageManager _userImageManager;
 
     public AuthenticationController(
-        IIdentityAuthService identityAuthService
+        IIdentityAuthService identityAuthService,
+        IUserImageManager userImageManager
     )
     {
-        this.identityAuthService = identityAuthService;
+        _identityAuthService = identityAuthService;
+        _userImageManager = userImageManager;
     }
 
     [HttpPost]
@@ -29,7 +33,7 @@ public class AuthenticationController : ControllerBase
     {
         try
         {
-            var accessToken = await identityAuthService.SignInAsync(loginDto.LoginIdentifier, loginDto.Password, true);
+            var accessToken = await _identityAuthService.SignInAsync(loginDto.LoginIdentifier, loginDto.Password, true);
             return Ok(accessToken);
         }
         catch(InvalidCredentialException exeption)
@@ -59,9 +63,10 @@ public class AuthenticationController : ControllerBase
             {
                 UserName = registrationDto.Name,
                 Email = registrationDto.Email,
+                AvatarPath = _userImageManager.GetDefaultImageUrl(),
             };
 
-            var result = await identityAuthService.RegisterAsync(user, registrationDto.Password);
+            var result = await _identityAuthService.RegisterAsync(user, registrationDto.Password);
 
             return result.Succeeded ? Ok() : BadRequest(result.Errors);
         }
@@ -86,7 +91,7 @@ public class AuthenticationController : ControllerBase
         try
         {
             var jwt = base.HttpContext.Request.Headers.Authorization.FirstOrDefault();
-            var deletedToken = await identityAuthService.SignOutAsync(refresh, jwt!);
+            var deletedToken = await _identityAuthService.SignOutAsync(refresh, jwt!);
 
             return Ok(new {
                 Token = deletedToken
@@ -112,7 +117,7 @@ public class AuthenticationController : ControllerBase
         try
         {
             var jwt = base.HttpContext.Request.Headers.Authorization.FirstOrDefault();
-            var accessToken = await identityAuthService.UpdateToken(refresh, jwt!);
+            var accessToken = await _identityAuthService.UpdateToken(refresh, jwt!);
 
             return Ok(accessToken);
         }
