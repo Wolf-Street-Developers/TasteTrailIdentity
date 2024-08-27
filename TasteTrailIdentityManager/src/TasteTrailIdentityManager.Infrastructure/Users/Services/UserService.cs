@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TasteTrailData.Core.Users.Models;
+using TasteTrailData.Infrastructure.Blob.Managers;
 using TasteTrailIdentityManager.Core.Common.Tokens.RefreshTokens.Services;
 using TasteTrailIdentityManager.Core.Users.Services;
 
@@ -13,14 +14,18 @@ public class UserService : IUserService
 
     private readonly IRefreshTokenService _refreshService;
 
-    public UserService(UserManager<User> userManager, IRefreshTokenService refreshService)
+    private readonly BaseBlobImageManager<string> _userImageManager;
+
+    public UserService(UserManager<User> userManager, IRefreshTokenService refreshService, BaseBlobImageManager<string> userImageManager)
     {
         _userManager = userManager;
         _refreshService = refreshService;
+        _userImageManager = userImageManager;
     }
 
     public async Task<IdentityResult> CreateUserAsync(User user, string password)
     {
+        user.AvatarPath = _userImageManager.GetDefaultImageUrl();
         return await _userManager.CreateAsync(user, password);
     }
     public async Task<IList<string>> GetRolesByUsernameAsync(string username)
