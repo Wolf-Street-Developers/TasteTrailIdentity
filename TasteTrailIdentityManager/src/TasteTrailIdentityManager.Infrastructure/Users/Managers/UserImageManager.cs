@@ -15,7 +15,9 @@ public class UserImageManager : BaseBlobImageManager<string>
     public UserImageManager(IUserService userService, BlobServiceClient blobServiceClient) : base(blobServiceClient, "user-avatars")
     {
         _userService = userService;
-        _defaultAvatarUrl = GetDefaultImageUrl();
+
+            _defaultAvatarUrl = GetDefaultImageUrl();
+
     }
 
 

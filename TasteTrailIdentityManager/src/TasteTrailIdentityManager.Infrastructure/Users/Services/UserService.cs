@@ -14,18 +14,14 @@ public class UserService : IUserService
 
     private readonly IRefreshTokenService _refreshService;
 
-    private readonly BaseBlobImageManager<string> _userImageManager;
-
-    public UserService(UserManager<User> userManager, IRefreshTokenService refreshService, BaseBlobImageManager<string> userImageManager)
+    public UserService(UserManager<User> userManager, IRefreshTokenService refreshService)
     {
         _userManager = userManager;
         _refreshService = refreshService;
-        _userImageManager = userImageManager;
     }
 
     public async Task<IdentityResult> CreateUserAsync(User user, string password)
     {
-        user.AvatarPath = _userImageManager.GetDefaultImageUrl();
         return await _userManager.CreateAsync(user, password);
     }
     public async Task<IList<string>> GetRolesByUsernameAsync(string username)
