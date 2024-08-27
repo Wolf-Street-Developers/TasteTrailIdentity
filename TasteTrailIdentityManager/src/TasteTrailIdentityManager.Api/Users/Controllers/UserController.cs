@@ -5,8 +5,8 @@ using TasteTrailData.Core.Users.Models;
 using TasteTrailIdentityManager.Core.Authentication.Services;
 using TasteTrailIdentityManager.Core.Users.Services;
 using TasteTrailIdentityManager.Infrastructure.Users.Dtos;
-using TasteTrailIdentityManager.Core.Users.Managers;
 using System.Security.Claims;
+using TasteTrailData.Infrastructure.Blob.Managers;
 
 namespace TasteTrailIdentityManager.Api.Users.Controllers;
 
@@ -15,10 +15,10 @@ namespace TasteTrailIdentityManager.Api.Users.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
-    private readonly IUserImageManager _userImageManager;
+    private readonly BaseBlobImageManager<string> _userImageManager;
     private readonly IIdentityAuthService _identityAuthService;
 
-    public UserController(IIdentityAuthService identityAuthService, IUserService userService, IUserImageManager userImageManager)
+    public UserController(IIdentityAuthService identityAuthService, IUserService userService, BaseBlobImageManager<string> userImageManager)
     {
         _identityAuthService = identityAuthService;
         _userService = userService;

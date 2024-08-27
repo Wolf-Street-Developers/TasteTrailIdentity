@@ -1,11 +1,11 @@
 namespace TasteTrailIdentityManager.Api.Common.Extensions.ServiceCollectionExtensions;
 
+using TasteTrailData.Infrastructure.Blob.Managers;
 using TasteTrailIdentityManager.Core.Authentication.Services;
 using TasteTrailIdentityManager.Core.Common.Admin.Services;
 using TasteTrailIdentityManager.Core.Common.Tokens.RefreshTokens.Repositories;
 using TasteTrailIdentityManager.Core.Common.Tokens.RefreshTokens.Services;
 using TasteTrailIdentityManager.Core.Roles.Services;
-using TasteTrailIdentityManager.Core.Users.Managers;
 using TasteTrailIdentityManager.Core.Users.Services;
 using TasteTrailIdentityManager.Infrastructure.Authentication.Services;
 using TasteTrailIdentityManager.Infrastructure.Common.Admin.Services;
@@ -27,6 +27,6 @@ public static class RegisterDependencyInjectionMethod
         serviceCollection.AddTransient<IRefreshTokenRepository, RefreshTokenEfCoreRepository>();
         serviceCollection.AddTransient<IRefreshTokenService, RefreshTokenService>();
 
-        serviceCollection.AddTransient<IUserImageManager, UserImageManager>();
+        serviceCollection.AddTransient<BaseBlobImageManager<string>, UserImageManager>();
     } 
 }

@@ -2,25 +2,24 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Http;
 using TasteTrailIdentityManager.Core.Users.Services;
-using TasteTrailIdentityManager.Core.Users.Managers;
+using TasteTrailData.Infrastructure.Blob.Managers;
 
 namespace TasteTrailIdentityManager.Infrastructure.Users.Managers;
 
-public class UserImageManager : IUserImageManager
+
+public class UserImageManager : BaseBlobImageManager<string>
 {
     private readonly IUserService _userService;
-    private readonly BlobServiceClient _blobServiceClient;
     private readonly string _defaultAvatarUrl;
-    private readonly string _containerName = "user-avatars";
 
-    public UserImageManager(IUserService userService, BlobServiceClient blobServiceClient)
+    public UserImageManager(IUserService userService, BlobServiceClient blobServiceClient) : base(blobServiceClient, "user-avatars")
     {
         _userService = userService;
-        _blobServiceClient = blobServiceClient;
         _defaultAvatarUrl = GetDefaultImageUrl();
     }
 
-    public async Task<string> DeleteImageAsync(string id)
+
+    public async override Task<string> DeleteImageAsync(string id)
     {
         var user = await _userService.GetUserByIdAsync(id) ?? throw new ArgumentException($"User with Id {id} not found.");
 
@@ -39,20 +38,7 @@ public class UserImageManager : IUserImageManager
         return user.AvatarPath!;
     }
 
-    public string GetDefaultImageUrl()
-    {
-        var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
-        var defaultLogoBlobName = "default-avatar.png";
-
-        var blobClient = containerClient.GetBlobClient(defaultLogoBlobName);
-        
-        if (!blobClient.Exists())
-            throw new InvalidOperationException("Default avatar does not exist in Blob Storage.");
-
-        return blobClient.Uri.ToString();
-    }
-
-    public async Task<string> SetImageAsync(string id, IFormFile? avatar)
+    public async override Task<string> SetImageAsync(string id, IFormFile? avatar)
     {
         var user = await _userService.GetUserByIdAsync(id) ?? throw new ArgumentException($"User with Id {id} not found.");
 
@@ -78,5 +64,4 @@ public class UserImageManager : IUserImageManager
 
         return avatarUrl;
     }
-
 }
