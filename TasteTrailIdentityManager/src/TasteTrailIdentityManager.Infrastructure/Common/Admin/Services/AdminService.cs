@@ -35,11 +35,6 @@ public class AdminService : IAdminService
         return await _userManager.AddToRoleAsync(user, roleName);
     }
 
-    public async Task<IEnumerable<User>> GetUsersAsync(int PageNumber, int PageSize)
-    {
-        var users =  _context.Users.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList(); 
-        return users;
-    }
 
     public async Task<User> GetUserByUsernameAsync(string username)
     {

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using TasteTrailData.Core.Filters.Specifications;
 using TasteTrailData.Core.Users.Models;
 using TasteTrailData.Infrastructure.Filters.Dtos;
 using TasteTrailIdentityManager.Core.Roles.Enums;
@@ -23,13 +24,15 @@ public interface IAdminService
 
     Task<User> GetUserByIdAsync(string userId);
 
-    Task<int> GetUsersCount();
+    Task<int> GetUsersCountAsync();
+
+    Task<int> GetCountBySpecificationAsync(IFilterSpecification<User>? specification);
 
     Task<IdentityResult> RemoveRoleFromUserAsync(string userId, UserRoles role);
 
-    Task<IdentityResult> ToggleBanUser(string userId);
+    Task<IdentityResult> ToggleBanUserAsync(string userId);
 
-    Task<IdentityResult> ToggleMuteUser(string userId);
+    Task<IdentityResult> ToggleMuteUserAsync(string userId);
 
 
 
