@@ -3,6 +3,7 @@ using TasteTrailData.Core.Filters.Specifications;
 using TasteTrailData.Core.Users.Models;
 using TasteTrailData.Infrastructure.Filters.Dtos;
 using TasteTrailIdentityManager.Core.Roles.Enums;
+using TasteTrailIdentityManager.Core.Users.Dtos;
 
 namespace TasteTrailIdentityManager.Core.Common.Admin.Services;
 
@@ -10,13 +11,13 @@ public interface IAdminService
 {
     Task<IdentityResult> AssignRoleToUserAsync(string userId, UserRoles role);
 
-    Task<FilterResponseDto<User>> GetUsersFilteredAsync(PaginationParametersDto paginationParameters);
+    Task<FilterResponseDto<UserResponseDto>> GetUsersAsync(PaginationParametersDto paginationParameters);
 
-    Task<FilterResponseDto<User>> GetUsersFilteredAsync(PaginationSearchParametersDto paginationParameters);
+    Task<FilterResponseDto<UserResponseDto>> GetUsersBySearchAsync(PaginationSearchParametersDto paginationParameters);
 
-    Task<FilterResponseDto<User>> GetUsersFilteredAsync(FilterParametersDto filterParameters);
+    Task<FilterResponseDto<UserResponseDto>> GetUsersFilteredAsync(FilterParametersDto filterParameters);
 
-    Task<FilterResponseDto<User>> GetUsersFilteredAsync(FilterParametersSearchDto filterParameters);
+    Task<FilterResponseDto<UserResponseDto>> GetUsersFiltereBySearchdAsync(FilterParametersSearchDto filterParameters);
 
     Task<User> GetUserByUsernameAsync(string username);
 
@@ -26,7 +27,7 @@ public interface IAdminService
 
     Task<int> GetUsersCountAsync();
 
-    Task<int> GetCountBySpecificationAsync(IFilterSpecification<User>? specification);
+    Task<int> GetCountFilteredAsync(FilterParametersDto filterParameters);
 
     Task<IdentityResult> RemoveRoleFromUserAsync(string userId, UserRoles role);
 

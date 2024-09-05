@@ -1,6 +1,6 @@
 using TasteTrailData.Core.Users.Models;
 
-namespace TasteTrailIdentityManager.Infrastructure.Users.Dtos;
+namespace TasteTrailIdentityManager.Core.Users.Dtos;
 
 public class UserResponseDto
 {

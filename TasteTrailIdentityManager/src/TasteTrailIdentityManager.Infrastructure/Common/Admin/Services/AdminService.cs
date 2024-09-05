@@ -2,11 +2,16 @@
 
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using TasteTrailData.Core.Filters.Specifications;
 using TasteTrailData.Core.Roles.Models;
 using TasteTrailData.Core.Users.Models;
 using TasteTrailData.Infrastructure.Common.Data;
+using TasteTrailData.Infrastructure.Filters.Dtos;
 using TasteTrailIdentityManager.Core.Common.Admin.Services;
 using TasteTrailIdentityManager.Core.Roles.Enums;
+using TasteTrailIdentityManager.Infrastructure.Common.Admin.Factories;
+using TasteTrailIdentityManager.Core.Users.Dtos;
 
 namespace TasteTrailIdentityManager.Infrastructure.Common.Admin.Services;
 
@@ -56,7 +61,7 @@ public class AdminService : IAdminService
         return user;
     }
 
-    public async Task<int> GetUsersCount()
+    public async Task<int> GetUsersCountAsync()
     {
         return _context.Users.Count();
     }
@@ -88,7 +93,7 @@ public class AdminService : IAdminService
         return removeResult;
     }
 
-    public async Task<IdentityResult> ToggleBanUser(string userId)
+    public async Task<IdentityResult> ToggleBanUserAsync(string userId)
     {
         var user = await _userManager.FindByIdAsync(userId);
 
@@ -99,7 +104,7 @@ public class AdminService : IAdminService
         return await _userManager.UpdateAsync(user);
     }
 
-    public async Task<IdentityResult> ToggleMuteUser(string userId)
+    public async Task<IdentityResult> ToggleMuteUserAsync(string userId)
     {
         var user = await _userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"cannot find user with id: {userId}");
 
@@ -112,5 +117,111 @@ public class AdminService : IAdminService
 
 
         return await _userManager.ReplaceClaimAsync(user, isMutedClaim, new Claim("IsMuted", user.IsMuted.ToString()));
+    }
+
+    public async Task<FilterResponseDto<UserResponseDto>> GetUsersAsync(PaginationParametersDto paginationParameters)
+    {
+        var users = _context.Users.AsQueryable();
+        var userDtos = new List<UserResponseDto>();
+
+        foreach (var user in users)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+            var userDto = new UserResponseDto
+            {
+                User = user,
+                Roles = roles
+            };
+
+            userDtos.Add(userDto);
+        }
+
+        var totalUsers = await users.CountAsync();
+        var totalPages = (int)Math.Ceiling(totalUsers / (double)paginationParameters.PageSize);
+
+
+        var filterReponse = new FilterResponseDto<UserResponseDto>() {
+            CurrentPage = paginationParameters.PageNumber,
+            AmountOfPages = totalPages,
+            AmountOfEntities = totalUsers,
+            Entities = userDtos
+        };
+
+        return filterReponse;
+    }
+
+    public Task<FilterResponseDto<UserResponseDto>> GetUsersBySearchAsync(PaginationSearchParametersDto paginationParameters)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<FilterResponseDto<UserResponseDto>> GetUsersFilteredAsync(FilterParametersDto filterParameters)
+    {
+        var newFilterParameters = new FilterParameters<User>() {
+            PageNumber = filterParameters.PageNumber,
+            PageSize = filterParameters.PageSize,
+            Specification = UserManipulationsFilterFactory.CreateFilter(filterParameters.Type),
+            SearchTerm = null
+        };
+
+        var users = _context.Users.AsQueryable();
+        var userDtos = new List<UserResponseDto>();
+
+        foreach (var user in users)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+            var userDto = new UserResponseDto
+            {
+                User = user,
+                Roles = roles
+            };
+
+            userDtos.Add(userDto);
+        }
+
+        var totalUsers = await users.CountAsync();
+        
+        if(newFilterParameters.Specification != null)
+        {
+            users = newFilterParameters.Specification.Apply(users);
+            totalUsers = await users.CountAsync();
+        }
+
+        var totalPages = (int)Math.Ceiling(totalUsers / (double)filterParameters.PageSize);
+
+
+        var filterReponse = new FilterResponseDto<UserResponseDto>() {
+            CurrentPage = filterParameters.PageNumber,
+            AmountOfPages = totalPages,
+            AmountOfEntities = totalUsers,
+            Entities = userDtos
+        };
+
+        return filterReponse;
+    }
+
+    public Task<FilterResponseDto<UserResponseDto>> GetUsersFiltereBySearchdAsync(FilterParametersSearchDto filterParameters)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<int> GetCountFilteredAsync(FilterParametersDto filterParameters)
+    {
+        var newFilterParameters = new FilterParameters<User>() {
+            PageNumber = filterParameters.PageNumber,
+            PageSize = filterParameters.PageSize,
+            Specification = UserManipulationsFilterFactory.CreateFilter(filterParameters.Type),
+            SearchTerm = null
+        };
+
+        var query = _context.Users.AsQueryable();
+
+        if (filterParameters is null)
+            return await query.CountAsync();
+
+        if (newFilterParameters.Specification != null)
+            query = newFilterParameters.Specification.Apply(query);
+
+        return await query.CountAsync();
     }
 }
