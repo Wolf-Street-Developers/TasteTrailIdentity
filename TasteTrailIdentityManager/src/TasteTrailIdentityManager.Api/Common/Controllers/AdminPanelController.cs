@@ -20,29 +20,7 @@ public class AdminPanelController : ControllerBase
 
     [Authorize(Roles = "Admin")]
     [HttpGet("User/Count")]
-    public async Task<IActionResult> GetUsersCount()
-    {
-        try
-        {
-            var usersCount = await _adminService.GetUsersCountAsync();
-
-            return Ok(new {
-                usersCount = usersCount
-            });
-        }
-        catch(ArgumentException exception)
-        {   
-            return BadRequest(exception.Message);
-        }
-        catch(Exception exception)
-        {
-            return this.InternalServerError(exception.Message);
-        }
-    }
-
-    [Authorize(Roles = "Admin")]
-    [HttpGet("User/CountFiltered")]
-    public async Task<IActionResult> GetUsersCountFiltered([FromQuery]FilterParametersDto filterParameters)
+    public async Task<IActionResult> GetUsersCountAsync([FromQuery]FilterParametersDto filterParameters)
     {
         try
         {
@@ -64,13 +42,17 @@ public class AdminPanelController : ControllerBase
 
     [HttpGet("User")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetUsersAsync([FromQuery]PaginationParametersDto dto)
+    public async Task<IActionResult> GetUsersFilteredAsync([FromQuery]FilterParametersDto dto)
     {
         try
         {
-            var userResonseDto = await _adminService.GetUsersAsync(dto);
+            var userResonseDto = await _adminService.GetUsersFilteredAsync(dto);
 
             return Ok(userResonseDto);
+        }
+        catch(ArgumentException exception)
+        {   
+            return BadRequest(exception.Message);
         }
         catch(Exception exception)
         {
@@ -80,38 +62,6 @@ public class AdminPanelController : ControllerBase
 
     [HttpGet("User/Search")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetUsersBySearchAsync([FromQuery]PaginationSearchParametersDto dto)
-    {
-        try
-        {
-            var userResonseDto = await _adminService.GetUsersBySearchAsync(dto);
-
-            return Ok(userResonseDto);
-        }
-        catch(Exception exception)
-        {
-            return this.InternalServerError(exception.Message);
-        }
-    }
-
-    [HttpGet("User/Filtered")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetUsersFilteredAsync([FromQuery]FilterParametersDto dto)
-    {
-        try
-        {
-            var userResonseDto = await _adminService.GetUsersFilteredAsync(dto);
-
-            return Ok(userResonseDto);
-        }
-        catch(Exception exception)
-        {
-            return this.InternalServerError(exception.Message);
-        }
-    }
-
-    [HttpGet("User/Filtered/Search")]
-    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetUsersFiltereBySearchdAsync([FromQuery]FilterParametersSearchDto dto)
     {
         try
@@ -119,6 +69,10 @@ public class AdminPanelController : ControllerBase
             var userResonseDto = await _adminService.GetUsersFiltereBySearchdAsync(dto);
 
             return Ok(userResonseDto);
+        }
+        catch(ArgumentException exception)
+        {   
+            return BadRequest(exception.Message);
         }
         catch(Exception exception)
         {

@@ -11,10 +11,6 @@ public interface IAdminService
 {
     Task<IdentityResult> AssignRoleToUserAsync(string userId, UserRoles role);
 
-    Task<FilterResponseDto<UserResponseDto>> GetUsersAsync(PaginationParametersDto paginationParameters);
-
-    Task<FilterResponseDto<UserResponseDto>> GetUsersBySearchAsync(PaginationSearchParametersDto paginationParameters);
-
     Task<FilterResponseDto<UserResponseDto>> GetUsersFilteredAsync(FilterParametersDto filterParameters);
 
     Task<FilterResponseDto<UserResponseDto>> GetUsersFiltereBySearchdAsync(FilterParametersSearchDto filterParameters);
