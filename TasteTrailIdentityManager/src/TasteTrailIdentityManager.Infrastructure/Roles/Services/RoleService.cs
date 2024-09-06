@@ -39,7 +39,7 @@ public class RoleService : IRoleService
 
     public async Task SetupRolesAsync()
     {
-        List<string> roleNames = ["Admin", "User"];
+        List<string> roleNames = ["Admin", "User", "Owner"];
         
         foreach (var roleName in roleNames)
         {
