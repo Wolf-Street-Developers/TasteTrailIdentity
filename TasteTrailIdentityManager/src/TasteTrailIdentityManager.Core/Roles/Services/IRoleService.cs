@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using TasteTrailIdentityManager.Core.Roles.Enums;
+using TasteTrailData.Core.Roles.Enums;
 
 namespace TasteTrailIdentityManager.Core.Roles.Services;
 

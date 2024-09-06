@@ -6,10 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using TasteTrailData.Core.Filters.Specifications;
 using TasteTrailData.Core.Roles.Models;
 using TasteTrailData.Core.Users.Models;
-using TasteTrailData.Infrastructure.Common.Data;
 using TasteTrailData.Infrastructure.Filters.Dtos;
 using TasteTrailIdentityManager.Core.Common.Admin.Services;
-using TasteTrailIdentityManager.Core.Roles.Enums;
+using TasteTrailData.Core.Roles.Enums;
 using TasteTrailIdentityManager.Infrastructure.Common.Admin.Factories;
 using TasteTrailIdentityManager.Core.Users.Dtos;
 

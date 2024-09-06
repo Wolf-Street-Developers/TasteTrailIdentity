@@ -11,7 +11,7 @@ using TasteTrailIdentityManager.Core.Authentication.Services;
 using TasteTrailIdentityManager.Core.Common.Admin.Services;
 using TasteTrailIdentityManager.Core.Common.Tokens.AccessTokens.Entities;
 using TasteTrailIdentityManager.Core.Common.Tokens.RefreshTokens.Services;
-using TasteTrailIdentityManager.Core.Roles.Enums;
+using TasteTrailData.Core.Roles.Enums;
 using TasteTrailIdentityManager.Core.Users.Services;
 using TasteTrailIdentityManager.Infrastructure.Common.Options;
 using TasteTrailIdentityManager.Infrastructure.Common.Extensions.IdentityAuthService;

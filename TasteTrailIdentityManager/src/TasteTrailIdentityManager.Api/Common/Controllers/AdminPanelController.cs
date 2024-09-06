@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TasteTrailData.Api.Common.Extensions.Controllers;
 using TasteTrailData.Infrastructure.Filters.Dtos;
 using TasteTrailIdentityManager.Core.Common.Admin.Services;
-using TasteTrailIdentityManager.Core.Roles.Enums;
+using TasteTrailData.Core.Roles.Enums;
 
 namespace TasteTrailIdentityManager.Api.Common.Controllers;
 

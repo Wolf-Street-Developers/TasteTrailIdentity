@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using TasteTrailData.Core.Filters.Specifications;
 using TasteTrailData.Core.Users.Models;
 using TasteTrailData.Infrastructure.Filters.Dtos;
-using TasteTrailIdentityManager.Core.Roles.Enums;
+using TasteTrailData.Core.Roles.Enums;
 using TasteTrailIdentityManager.Core.Users.Dtos;
 
 namespace TasteTrailIdentityManager.Core.Common.Admin.Services;
