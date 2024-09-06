@@ -4,7 +4,7 @@ using TasteTrailData.Api.Common.Extensions.Controllers;
 using TasteTrailData.Core.Users.Models;
 using TasteTrailIdentityManager.Core.Authentication.Services;
 using TasteTrailIdentityManager.Core.Users.Services;
-using TasteTrailIdentityManager.Infrastructure.Users.Dtos;
+using TasteTrailIdentityManager.Core.Users.Dtos;
 using System.Security.Claims;
 using TasteTrailData.Infrastructure.Blob.Managers;
 

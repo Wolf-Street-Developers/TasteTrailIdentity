@@ -21,13 +21,11 @@ public class AdminService : IAdminService
 
     private readonly RoleManager<Role> _roleManager;
 
-    private readonly TasteTrailDbContext _context;
 
-    public AdminService(UserManager<User> userManager, RoleManager<Role> roleManager, TasteTrailDbContext context)
+    public AdminService(UserManager<User> userManager, RoleManager<Role> roleManager)
     {
         _userManager = userManager;
         _roleManager = roleManager;
-        _context = context;
     }
     public async Task<IdentityResult> AssignRoleToUserAsync(string userId, UserRoles role)
     {
@@ -63,7 +61,7 @@ public class AdminService : IAdminService
 
     public async Task<int> GetUsersCountAsync()
     {
-        return _context.Users.Count();
+        return _userManager.Users.Count();
     }
 
     public async Task<IdentityResult> RemoveRoleFromUserAsync(string userId, UserRoles role)
@@ -121,15 +119,15 @@ public class AdminService : IAdminService
 
     public async Task<FilterResponseDto<UserResponseDto>> GetUsersAsync(PaginationParametersDto paginationParameters)
     {
-        var users = _context.Users.AsQueryable();
+        var users = _userManager.Users.AsNoTracking();
         var userDtos = new List<UserResponseDto>();
 
-        var totalUsers = await users.CountAsync();
+        var totalUsers = await _userManager.Users.CountAsync();
         var totalPages = (int)Math.Ceiling(totalUsers / (double)paginationParameters.PageSize);
 
-        users = users.Skip((paginationParameters.PageNumber - 1) * paginationParameters.PageSize).Take(paginationParameters.PageSize);
+        var paginatedUsers = users.Skip((paginationParameters.PageNumber - 1) * paginationParameters.PageSize).Take(paginationParameters.PageSize).ToList();
 
-        foreach (var user in users)
+        foreach (var user in paginatedUsers)
         {
             var roles = await _userManager.GetRolesAsync(user);
             var userDto = new UserResponseDto
@@ -153,28 +151,30 @@ public class AdminService : IAdminService
 
     public async Task<FilterResponseDto<UserResponseDto>> GetUsersBySearchAsync(PaginationSearchParametersDto paginationParameters)
     {
-        var users = _context.Users.AsQueryable();
+        var users = _userManager.Users.AsQueryable();
 
         var totalUsers = await users.CountAsync();
+
+        var searchedUsers = new List<User>(users);
 
         if (paginationParameters.SearchTerm is not null)
         {
             var searchTerm = $"%{paginationParameters.SearchTerm.ToLower()}%";
 
-            users = users.Where(f =>
+            searchedUsers = users.Where(f =>
                 f.UserName != null && EF.Functions.Like(f.UserName.ToLower(), searchTerm)
-            );
+            ).ToList();
             
-            totalUsers = await users.CountAsync();
+            totalUsers = searchedUsers.Count();
         }
 
         var totalPages = (int)Math.Ceiling(totalUsers / (double)paginationParameters.PageSize);
 
         var userDtos = new List<UserResponseDto>();
 
-        users = users.Skip((paginationParameters.PageNumber - 1) * paginationParameters.PageSize).Take(paginationParameters.PageSize);
+        var paginatedUsers = searchedUsers.Skip((paginationParameters.PageNumber - 1) * paginationParameters.PageSize).Take(paginationParameters.PageSize);
 
-        foreach (var user in users)
+        foreach (var user in paginatedUsers)
         {
             var roles = await _userManager.GetRolesAsync(user);
             var userDto = new UserResponseDto
@@ -205,7 +205,7 @@ public class AdminService : IAdminService
             SearchTerm = null
         };
 
-        var users = _context.Users.AsQueryable();
+        var users = _userManager.Users.AsQueryable();
 
         var totalUsers = await users.CountAsync();
         
@@ -219,9 +219,9 @@ public class AdminService : IAdminService
 
         var userDtos = new List<UserResponseDto>();
 
-        users = users.Skip((filterParameters.PageNumber - 1) * filterParameters.PageSize).Take(filterParameters.PageSize);
+        var paginatedUsers = users.Skip((filterParameters.PageNumber - 1) * filterParameters.PageSize).Take(filterParameters.PageSize).ToList();
 
-        foreach (var user in users)
+        foreach (var user in paginatedUsers)
         {
             var roles = await _userManager.GetRolesAsync(user);
             var userDto = new UserResponseDto
@@ -252,7 +252,7 @@ public class AdminService : IAdminService
             SearchTerm = filterParameters.SearchTerm
         };
 
-        var users = _context.Users.AsQueryable();
+        var users = _userManager.Users.AsQueryable();
 
         var totalUsers = await users.CountAsync();
 
@@ -262,13 +262,15 @@ public class AdminService : IAdminService
             totalUsers = await users.CountAsync();
         }
 
+        var searchedUsers = new List<User>(users);
+
         if (filterParameters.SearchTerm is not null)
         {
             var searchTerm = $"%{filterParameters.SearchTerm.ToLower()}%";
 
-            users = users.Where(f =>
+            searchedUsers = users.Where(f =>
                 f.UserName != null && EF.Functions.Like(f.UserName.ToLower(), searchTerm)
-            );
+            ).ToList();
 
             totalUsers = await users.CountAsync();
         }
@@ -277,9 +279,9 @@ public class AdminService : IAdminService
 
         var userDtos = new List<UserResponseDto>();
 
-        users = users.Skip((filterParameters.PageNumber - 1) * filterParameters.PageSize).Take(filterParameters.PageSize);
+        var paginatedUsers = searchedUsers.Skip((filterParameters.PageNumber - 1) * filterParameters.PageSize).Take(filterParameters.PageSize);
 
-        foreach (var user in users)
+        foreach (var user in paginatedUsers)
         {
             var roles = await _userManager.GetRolesAsync(user);
             var userDto = new UserResponseDto
@@ -310,7 +312,7 @@ public class AdminService : IAdminService
             SearchTerm = null
         };
 
-        var query = _context.Users.AsQueryable();
+        var query = _userManager.Users.AsQueryable();
 
         if (filterParameters is null)
             return await query.CountAsync();
