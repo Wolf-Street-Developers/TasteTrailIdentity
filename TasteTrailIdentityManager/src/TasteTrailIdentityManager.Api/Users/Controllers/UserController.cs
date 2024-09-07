@@ -26,34 +26,6 @@ public class UserController : ControllerBase
     }
 
 
-    [HttpGet()]
-    [Authorize]
-    public async Task<IActionResult> GetUserRolesAsync()
-    {
-        try
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userService.GetUserByIdAsync(userId!);
-            var roles = await _userService.GetRolesByUsernameAsync(user.UserName!);
-
-            var userDto = new UserResponseDto()
-            {
-                User = user,
-                Roles = roles
-            };
-
-            return Ok(userDto);
-        }
-        catch(ArgumentException exception)
-        {   
-            return BadRequest(exception.Message);
-        }
-        catch(Exception exception)
-        {
-            return this.InternalServerError(exception.Message);
-        }
-    }
-
     [HttpPut("/api/[controller]")]
     [Authorize]
     public async Task<IActionResult> UpdateAsync([FromBody]UpdateUserDto model, [FromQuery] Guid refresh)
