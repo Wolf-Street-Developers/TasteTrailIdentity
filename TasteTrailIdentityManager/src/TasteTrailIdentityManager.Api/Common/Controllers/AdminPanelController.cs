@@ -18,9 +18,9 @@ public class AdminPanelController : ControllerBase
         _adminService = adminService;
     }
 
+    [HttpPost("User/Count")]
     [Authorize(Roles = "Admin")]
-    [HttpGet("User/Count")]
-    public async Task<IActionResult> GetUsersCountAsync([FromQuery]FilterParametersDto filterParameters)
+    public async Task<IActionResult> GetUsersCountAsync([FromBody]FilterParametersDto filterParameters)
     {
         try
         {
@@ -40,29 +40,9 @@ public class AdminPanelController : ControllerBase
         }
     }
 
-    [HttpGet("User")]
+    [HttpPost("User")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetUsersFilteredAsync([FromQuery]FilterParametersDto dto)
-    {
-        try
-        {
-            var userResonseDto = await _adminService.GetUsersFilteredAsync(dto);
-
-            return Ok(userResonseDto);
-        }
-        catch(ArgumentException exception)
-        {   
-            return BadRequest(exception.Message);
-        }
-        catch(Exception exception)
-        {
-            return this.InternalServerError(exception.Message);
-        }
-    }
-
-    [HttpGet("User/Search")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetUsersFiltereBySearchdAsync([FromQuery]FilterParametersSearchDto dto)
+    public async Task<IActionResult> GetUsersAsync([FromBody]FilterParametersSearchDto dto)
     {
         try
         {
