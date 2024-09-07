@@ -40,7 +40,7 @@ public class AdminPanelController : ControllerBase
         }
     }
 
-    [HttpPost("User")]
+    [HttpPost("UserFilter")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetUsersAsync([FromBody]FilterParametersSearchDto dto)
     {
@@ -136,7 +136,7 @@ public class AdminPanelController : ControllerBase
         }
     }
 
-    [HttpGet("/api/[controller]/{userId}")]
+    [HttpGet("UserInfo/{userId}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetUserInfoAsync(string userId)
     {
