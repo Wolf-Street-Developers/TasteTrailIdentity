@@ -54,7 +54,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPut("/api/[controller]/{refresh}")]
+    [HttpPut("/api/[controller]")]
     [Authorize]
     public async Task<IActionResult> UpdateAsync([FromBody]UpdateUserDto model, [FromQuery] Guid refresh)
     {
@@ -82,6 +82,7 @@ public class UserController : ControllerBase
             var jwt = HttpContext.Request.Headers.Authorization.FirstOrDefault();
 
             _ = await _identityAuthService.SignOutAsync(jwt: jwt!, refresh: refresh);
+
             return Ok();
         }       
         catch(ArgumentException exception)
