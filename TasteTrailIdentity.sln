@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TasteTrailIdentity", "TasteTrailIdentity", "{F8A8A275-39A8-4D5C-902A-98CAC7E2F5E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F083373B-B16C-4173-9968-AB93795BF5AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasteTrailIdentity.Core", "TasteTrailIdentity\src\TasteTrailIdentity.Core\TasteTrailIdentity.Core.csproj", "{A1D4227B-1BC3-4CFF-B170-8464AFD983E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasteTrailIdentity.Infrastructure", "TasteTrailIdentity\src\TasteTrailIdentity.Infrastructure\TasteTrailIdentity.Infrastructure.csproj", "{845FEF88-290A-4DAC-A151-6DE89CFA2514}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasteTrailIdentity.Api", "TasteTrailIdentity\src\TasteTrailIdentity.Api\TasteTrailIdentity.Api.csproj", "{7B3BF129-98E9-4A24-BBC3-9C7CF2D931D8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1D4227B-1BC3-4CFF-B170-8464AFD983E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1D4227B-1BC3-4CFF-B170-8464AFD983E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1D4227B-1BC3-4CFF-B170-8464AFD983E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1D4227B-1BC3-4CFF-B170-8464AFD983E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{845FEF88-290A-4DAC-A151-6DE89CFA2514}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{845FEF88-290A-4DAC-A151-6DE89CFA2514}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{845FEF88-290A-4DAC-A151-6DE89CFA2514}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{845FEF88-290A-4DAC-A151-6DE89CFA2514}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B3BF129-98E9-4A24-BBC3-9C7CF2D931D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B3BF129-98E9-4A24-BBC3-9C7CF2D931D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B3BF129-98E9-4A24-BBC3-9C7CF2D931D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B3BF129-98E9-4A24-BBC3-9C7CF2D931D8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F083373B-B16C-4173-9968-AB93795BF5AA} = {F8A8A275-39A8-4D5C-902A-98CAC7E2F5E7}
+		{A1D4227B-1BC3-4CFF-B170-8464AFD983E0} = {F083373B-B16C-4173-9968-AB93795BF5AA}
+		{845FEF88-290A-4DAC-A151-6DE89CFA2514} = {F083373B-B16C-4173-9968-AB93795BF5AA}
+		{7B3BF129-98E9-4A24-BBC3-9C7CF2D931D8} = {F083373B-B16C-4173-9968-AB93795BF5AA}
+	EndGlobalSection
+EndGlobal
