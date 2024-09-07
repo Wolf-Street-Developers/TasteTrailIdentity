@@ -1,9 +1,9 @@
-namespace TasteTrailIdentityManager.Api.Common.Extensions.ServiceCollectionExtensions;
+namespace TasteTrailIdentity.Api.Common.Extensions.ServiceCollectionExtensions;
 
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using TasteTrailIdentityManager.Infrastructure.Common.Options;
+using TasteTrailIdentity.Infrastructure.Common.Options;
 
 public static class InitAuthMethod
 {

@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <!-- References -->
-    <ProjectReference Include="..\TasteTrailIdentityManager.Infrastructure\TasteTrailIdentityManager.Infrastructure.csproj" />
+    <ProjectReference Include="..\TasteTrailIdentity.Infrastructure\TasteTrailIdentity.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

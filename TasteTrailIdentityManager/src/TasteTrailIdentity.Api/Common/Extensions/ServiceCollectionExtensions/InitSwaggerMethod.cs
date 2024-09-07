@@ -1,4 +1,4 @@
-namespace TasteTrailIdentityManager.Api.Common.Extensions.ServiceCollectionExtensions;
+namespace TasteTrailIdentity.Api.Common.Extensions.ServiceCollectionExtensions;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;

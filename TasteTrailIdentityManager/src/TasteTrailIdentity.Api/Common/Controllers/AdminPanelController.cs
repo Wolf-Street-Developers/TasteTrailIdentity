@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TasteTrailData.Api.Common.Extensions.Controllers;
 using TasteTrailData.Infrastructure.Filters.Dtos;
-using TasteTrailIdentityManager.Core.Common.Admin.Services;
+using TasteTrailIdentity.Core.Common.Admin.Services;
 using TasteTrailData.Core.Roles.Enums;
 
-namespace TasteTrailIdentityManager.Api.Common.Controllers;
+namespace TasteTrailIdentity.Api.Common.Controllers;
 
 [ApiController]
 [Route("/api/[controller]")]

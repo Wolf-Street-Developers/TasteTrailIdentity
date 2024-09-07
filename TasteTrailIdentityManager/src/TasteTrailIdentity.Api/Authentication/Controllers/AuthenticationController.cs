@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TasteTrailData.Core.Users.Models;
 using TasteTrailData.Api.Common.Extensions.Controllers;
-using TasteTrailIdentityManager.Core.Authentication.Services;
-using TasteTrailIdentityManager.Infrastructure.Identities.Dtos;
+using TasteTrailIdentity.Core.Authentication.Services;
+using TasteTrailIdentity.Infrastructure.Identities.Dtos;
 using TasteTrailData.Infrastructure.Blob.Managers;
 
-namespace TasteTrailIdentityManager.Api.Controllers;
+namespace TasteTrailIdentity.Api.Controllers;
 
 [ApiController]
 [Route("/api/[controller]/[action]")]

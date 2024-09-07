@@ -1,6 +1,6 @@
 using TasteTrailData.Api.Common.Extensions.ServiceCollection;
-using TasteTrailIdentityManager.Api.Common.Extensions.ServiceCollectionExtensions;
-using TasteTrailIdentityManager.Api.Common.Extensions.WebApplicationExtensions;
+using TasteTrailIdentity.Api.Common.Extensions.ServiceCollectionExtensions;
+using TasteTrailIdentity.Api.Common.Extensions.WebApplicationExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

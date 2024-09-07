@@ -1,6 +1,6 @@
 using TasteTrailData.Infrastructure.Common.Data;
 
-namespace TasteTrailIdentityManager.Api.Common.Extensions.ServiceCollectionExtensions;
+namespace TasteTrailIdentity.Api.Common.Extensions.ServiceCollectionExtensions;
 public static class AddMediatRMethod
 {
     public static void AddMediatR(this IServiceCollection serviceCollection)

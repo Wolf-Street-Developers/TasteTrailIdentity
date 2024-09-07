@@ -1,6 +1,6 @@
-using TasteTrailIdentityManager.Core.Roles.Services;
+using TasteTrailIdentity.Core.Roles.Services;
 
-namespace TasteTrailIdentityManager.Api.Common.Extensions.WebApplicationExtensions;
+namespace TasteTrailIdentity.Api.Common.Extensions.WebApplicationExtensions;
 
 public static class SetupRolesMethod
 {
