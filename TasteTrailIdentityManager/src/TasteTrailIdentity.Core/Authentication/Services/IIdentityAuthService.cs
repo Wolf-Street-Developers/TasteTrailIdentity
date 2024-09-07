@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using TasteTrailData.Core.Users.Models;
-using TasteTrailIdentityManager.Core.Common.Tokens.AccessTokens.Entities;
+using TasteTrailIdentity.Core.Common.Tokens.AccessTokens.Entities;
 
-namespace TasteTrailIdentityManager.Core.Authentication.Services;
+namespace TasteTrailIdentity.Core.Authentication.Services;
 public interface IIdentityAuthService
 {
     Task<IdentityResult> RegisterAsync(User user, string password);

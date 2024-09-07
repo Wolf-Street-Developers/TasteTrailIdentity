@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using TasteTrailData.Core.Roles.Enums;
 
-namespace TasteTrailIdentityManager.Core.Roles.Services;
+namespace TasteTrailIdentity.Core.Roles.Services;
 
 public interface IRoleService
 {

@@ -2,7 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using TasteTrailData.Core.Users.Models;
 
-namespace TasteTrailIdentityManager.Core.Users.Services;
+namespace TasteTrailIdentity.Core.Users.Services;
 
 public interface IUserService
 {

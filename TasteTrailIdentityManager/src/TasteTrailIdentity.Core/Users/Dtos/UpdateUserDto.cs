@@ -1,4 +1,4 @@
-namespace TasteTrailIdentityManager.Core.Users.Dtos;
+namespace TasteTrailIdentity.Core.Users.Dtos;
 
 public class UpdateUserDto
 {

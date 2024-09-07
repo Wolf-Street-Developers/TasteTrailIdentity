@@ -1,6 +1,6 @@
 using TasteTrailData.Core.Common.Tokens.RefreshTokens.Entities;
 
-namespace TasteTrailIdentityManager.Core.Common.Tokens.RefreshTokens.Services;
+namespace TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Services;
 
 public interface IRefreshTokenService
 {

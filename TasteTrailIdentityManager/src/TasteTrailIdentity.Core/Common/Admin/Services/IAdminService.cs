@@ -3,9 +3,9 @@ using TasteTrailData.Core.Filters.Specifications;
 using TasteTrailData.Core.Users.Models;
 using TasteTrailData.Infrastructure.Filters.Dtos;
 using TasteTrailData.Core.Roles.Enums;
-using TasteTrailIdentityManager.Core.Users.Dtos;
+using TasteTrailIdentity.Core.Users.Dtos;
 
-namespace TasteTrailIdentityManager.Core.Common.Admin.Services;
+namespace TasteTrailIdentity.Core.Common.Admin.Services;
 
 public interface IAdminService
 {
