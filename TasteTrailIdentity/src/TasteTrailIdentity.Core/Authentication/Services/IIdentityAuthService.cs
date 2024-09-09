@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using TasteTrailData.Core.Users.Models;
+using TasteTrailIdentity.Core.Users.Models;
 using TasteTrailIdentity.Core.Common.Tokens.AccessTokens.Entities;
 
 namespace TasteTrailIdentity.Core.Authentication.Services;

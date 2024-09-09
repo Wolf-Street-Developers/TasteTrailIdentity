@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TasteTrailData.Core.Common.Tokens.RefreshTokens.Entities;
-using TasteTrailData.Core.Users.Models;
+using TasteTrailIdentity.Core.Users.Models;
 using TasteTrailIdentity.Core.Authentication.Services;
 using TasteTrailIdentity.Core.Common.Admin.Services;
 using TasteTrailIdentity.Core.Common.Tokens.AccessTokens.Entities;
@@ -22,21 +22,18 @@ public class IdentityAuthService : IIdentityAuthService
 {
     private readonly SignInManager<User> _signInManager;
     private readonly IUserService _userService;
-    private readonly IAdminService _adminService;
     private readonly JwtOptions _jwtOptions;
     private readonly IRefreshTokenService _refreshTokenService;
 
     public IdentityAuthService(
         SignInManager<User> signInManager, 
         IUserService userService, 
-        IAdminService adminService,
         IOptionsSnapshot<JwtOptions> jwtOptionsSnapshot,
         IRefreshTokenService refreshTokenService
         )
     {
         _refreshTokenService = refreshTokenService;
         _signInManager = signInManager;
-        _adminService = adminService;
         _userService = userService;
         _jwtOptions = jwtOptionsSnapshot.Value;
     }
@@ -44,7 +41,7 @@ public class IdentityAuthService : IIdentityAuthService
     public async Task<IdentityResult> RegisterAsync(User user, string password) {
         
         var creationResult = await _userService.CreateUserAsync(user, password);
-        var roleAssignResult = await _adminService.AssignRoleToUserAsync(user.Id, UserRoles.User);
+        var roleAssignResult = await _userService.AssignRoleToUserAsync(user.Id, UserRoles.User);
 
         var result = creationResult.Succeeded && roleAssignResult.Succeeded;
 

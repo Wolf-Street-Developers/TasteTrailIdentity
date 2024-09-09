@@ -12,6 +12,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.IsBanned)
             .IsRequired();
 
+            
+        builder.Property(u => u.IsMuted)
+            .IsRequired();
+
 
         builder.HasMany(u => u.RefreshTokens)
             .WithOne()

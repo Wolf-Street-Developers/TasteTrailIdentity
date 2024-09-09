@@ -1,23 +1,26 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TasteTrailData.Core.Users.Models;
-using TasteTrailData.Infrastructure.Blob.Managers;
+using TasteTrailIdentity.Core.Users.Models;
 using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Services;
 using TasteTrailIdentity.Core.Users.Services;
+using TasteTrailData.Core.Roles.Enums;
+using TasteTrailIdentity.Core.Roles.Models;
 
 namespace TasteTrailIdentity.Infrastructure.Users.Services;
 
 public class UserService : IUserService
 {
     private readonly UserManager<User> _userManager;
-
     private readonly IRefreshTokenService _refreshService;
 
-    public UserService(UserManager<User> userManager, IRefreshTokenService refreshService)
+    private readonly RoleManager<Role> _roleManager;
+
+    public UserService(UserManager<User> userManager, RoleManager<Role> roleManager,IRefreshTokenService refreshService)
     {
         _userManager = userManager;
         _refreshService = refreshService;
+        _roleManager = roleManager;
     }
 
     public async Task<IdentityResult> CreateUserAsync(User user, string password)
@@ -110,5 +113,16 @@ public class UserService : IUserService
         userToChange.AvatarPath = avatarPath;
 
         await _userManager.UpdateAsync(userToChange);
+    }
+
+       public async Task<IdentityResult> AssignRoleToUserAsync(string userId, UserRoles role)
+    {
+        var user = await _userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"cannot find user with id: {userId}");
+        var roleName = role.ToString();
+
+        if (!await _roleManager.RoleExistsAsync(roleName))
+            return IdentityResult.Failed(new IdentityError { Description = $"Role {roleName} not found." });
+
+        return await _userManager.AddToRoleAsync(user, roleName);
     }
 }

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TasteTrailData.Core.Common.Tokens.RefreshTokens.Entities;
+using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Entities;
 using TasteTrailData.Infrastructure.Common.Data;
 using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Repositories;
 

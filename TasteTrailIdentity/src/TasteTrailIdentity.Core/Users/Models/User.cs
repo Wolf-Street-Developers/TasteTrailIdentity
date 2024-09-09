@@ -13,6 +13,9 @@ public class User : IdentityUser, IBanable
     [DefaultValue(false)]
     public bool IsBanned { get; set; }
 
+    [DefaultValue(false)]
+    public bool IsMuted { get; set; }
+
     public string? AvatarPath { get; set; }
     [JsonIgnore]
     public ICollection<RefreshToken> RefreshTokens { get; set; }
