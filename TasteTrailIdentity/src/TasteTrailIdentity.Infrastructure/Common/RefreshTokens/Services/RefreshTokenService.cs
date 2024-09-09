@@ -1,4 +1,4 @@
-using TasteTrailData.Core.Common.Tokens.RefreshTokens.Entities;
+using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Entities;
 using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Repositories;
 using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Services;
 

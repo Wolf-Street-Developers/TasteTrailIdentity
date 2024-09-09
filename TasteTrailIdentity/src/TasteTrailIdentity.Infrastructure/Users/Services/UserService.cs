@@ -12,14 +12,11 @@ namespace TasteTrailIdentity.Infrastructure.Users.Services;
 public class UserService : IUserService
 {
     private readonly UserManager<User> _userManager;
-    private readonly IRefreshTokenService _refreshService;
-
     private readonly RoleManager<Role> _roleManager;
 
-    public UserService(UserManager<User> userManager, RoleManager<Role> roleManager,IRefreshTokenService refreshService)
+    public UserService(UserManager<User> userManager, RoleManager<Role> roleManager)
     {
         _userManager = userManager;
-        _refreshService = refreshService;
         _roleManager = roleManager;
     }
 
@@ -60,59 +57,12 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<IdentityResult> UpdateUserAsync(User user, Guid refresh)
-    {
-        var userToChange = await _userManager.FindByIdAsync(user.Id) ?? throw new ArgumentException($"cannot find user with id: {user.Id}");
-
-        userToChange.Email = user.Email;
-        userToChange.UserName = user.UserName;
-
-        var refreshToken = await _refreshService.GetByIdAsync(refresh) ?? throw new ArgumentException("Wrong refresh");
-
-        if(refreshToken.UserId != user.Id)
-        {
-            throw new ArgumentException($"user with id {user.Id} doesn't possess refresh {refresh}");
-        }
-
-        return await _userManager.UpdateAsync(userToChange);
-    }
-
-    public async Task<IdentityResult> DeleteUserAsync(string userId)
-    {
-        var user = await _userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"cannot find user with id: {userId}");
-
-        return await _userManager.DeleteAsync(user);
-    }
-
-    public async Task<bool> HasRegisteredUsers()
-    {
-        return await _userManager.Users.AnyAsync();
-    }
-
-    public async Task<IEnumerable<Claim>> GetUserClaimsAsync(User user)
-    {
-        return await _userManager.GetClaimsAsync(user) ?? throw new ArgumentException($"cannot find calims of user with id: {user.Id}");
-    }
-
     public async Task<IdentityResult> AddUserClaimAsync(User user, Claim claim)
     {
         var existingClaim = (await _userManager.GetClaimsAsync(user))
                 .FirstOrDefault(c => c.Type == claim.Type);
 
         return existingClaim is null ? await _userManager.AddClaimAsync(user, claim) : throw new ArgumentException($"user {user.Email} already has this claim!");
-    }
-
-    public async Task PatchAvatarUrlPathAsync(string userId, string avatarPath)
-    {
-        var userToChange = await _userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"cannot find user with id: {userId}");
-
-        if (string.IsNullOrWhiteSpace(avatarPath))
-        {
-            throw new ArgumentException("Logo URL path cannot be null or empty.", nameof(avatarPath));
-        }
-        userToChange.AvatarPath = avatarPath;
-
-        await _userManager.UpdateAsync(userToChange);
     }
 
        public async Task<IdentityResult> AssignRoleToUserAsync(string userId, UserRoles role)

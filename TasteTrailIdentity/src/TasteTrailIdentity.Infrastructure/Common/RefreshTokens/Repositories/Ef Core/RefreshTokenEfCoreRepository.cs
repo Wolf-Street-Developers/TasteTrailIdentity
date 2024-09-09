@@ -1,14 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Entities;
-using TasteTrailData.Infrastructure.Common.Data;
 using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Repositories;
+using TasteTrailIdentity.Infrastructure.Common.Data;
 
 namespace TasteTrailIdentity.Infrastructure.Common.RefreshTokens.Repositories.Ef_Core;
 
 public class RefreshTokenEfCoreRepository : IRefreshTokenRepository
 {
-    private readonly TasteTrailDbContext _dbContext;
-    public RefreshTokenEfCoreRepository(TasteTrailDbContext dbContext)
+    private readonly TasteTrailIdentityDbContext _dbContext;
+    public RefreshTokenEfCoreRepository(TasteTrailIdentityDbContext dbContext)
     {
         _dbContext = dbContext;
     }

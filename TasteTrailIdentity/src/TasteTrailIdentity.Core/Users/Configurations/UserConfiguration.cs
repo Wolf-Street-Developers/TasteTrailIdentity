@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TasteTrailIdentity.Core.Users.Models;
 
-namespace TasteTrailData.Core.Users.Configurations;
+namespace TasteTrailIdentity.Core.Users.Configurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
@@ -12,10 +12,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.IsBanned)
             .IsRequired();
 
-            
         builder.Property(u => u.IsMuted)
             .IsRequired();
-
 
         builder.HasMany(u => u.RefreshTokens)
             .WithOne()

@@ -14,29 +14,6 @@ public class RoleService : IRoleService
         _roleManager = roleManager;
     }
 
-    public async Task<IdentityResult> CreateRoleAsync(UserRoles role)
-    {
-        var roleName = role.ToString();
-
-        if (!await _roleManager.RoleExistsAsync(roleName))
-            return await _roleManager.CreateAsync(new Role(){
-                Name = roleName
-            });
-
-        return IdentityResult.Failed(new IdentityError { Description = $"Role {roleName} already exists." });
-    }
-
-    public async Task<IdentityResult> DeleteRoleAsync(UserRoles role)
-    {
-        var roleName = role.ToString();
-        var roleToDelete = await _roleManager.FindByNameAsync(roleName);
-
-        if (roleToDelete == null)
-            return IdentityResult.Failed(new IdentityError { Description = $"Role {roleName} not found." });
-
-        return await _roleManager.DeleteAsync(roleToDelete);
-    }
-
     public async Task SetupRolesAsync()
     {
         List<string> roleNames = ["Admin", "User", "Owner"];
