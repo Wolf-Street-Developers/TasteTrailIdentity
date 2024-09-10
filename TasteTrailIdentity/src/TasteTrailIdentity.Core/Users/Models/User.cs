@@ -8,7 +8,7 @@ using TasteTrailData.Core.Common.Tokens.RefreshTokens.Entities;
 
 namespace TasteTrailIdentity.Core.Users.Models;
 
-public class User : IdentityUser, IBanable
+public class User : IdentityUser, IBanable, IMuteable
 {
     [DefaultValue(false)]
     public bool IsBanned { get; set; }
