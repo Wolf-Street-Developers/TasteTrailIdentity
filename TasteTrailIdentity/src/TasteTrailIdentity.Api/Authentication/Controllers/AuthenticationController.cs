@@ -3,11 +3,11 @@ using System.Security.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TasteTrailData.Core.Users.Models;
+using TasteTrailIdentity.Core.Users.Models;
 using TasteTrailData.Api.Common.Extensions.Controllers;
 using TasteTrailIdentity.Core.Authentication.Services;
 using TasteTrailIdentity.Infrastructure.Identities.Dtos;
-using TasteTrailData.Infrastructure.Blob.Managers;
+using TasteTrailIdentity.Core.Users.Managers;
 
 namespace TasteTrailIdentity.Api.Controllers;
 
@@ -15,13 +15,12 @@ namespace TasteTrailIdentity.Api.Controllers;
 [Route("/api/[controller]/[action]")]
 public class AuthenticationController : ControllerBase
 {
-
     private readonly IIdentityAuthService _identityAuthService;
-    private readonly BaseBlobImageManager<string> _userImageManager;
+    private readonly IUserImageManager _userImageManager;
 
     public AuthenticationController(
         IIdentityAuthService identityAuthService,
-        BaseBlobImageManager<string> userImageManager
+        IUserImageManager userImageManager
     )
     {
         _identityAuthService = identityAuthService;
@@ -63,7 +62,7 @@ public class AuthenticationController : ControllerBase
             {
                 UserName = registrationDto.Name,
                 Email = registrationDto.Email,
-                AvatarPath = _userImageManager.GetDefaultImageUrl(),
+                AvatarPath = await _userImageManager.GetDefaultImageUrlAsync(),
             };
 
             var result = await _identityAuthService.RegisterAsync(user, registrationDto.Password);

@@ -1,6 +1,7 @@
-using TasteTrailIdentity.Core.Roles.Services;
+namespace TasteTrailIdentity.Api.Common.Extensions.WebApplication;
 
-namespace TasteTrailIdentity.Api.Common.Extensions.WebApplicationExtensions;
+using TasteTrailIdentity.Core.Roles.Services;
+using Microsoft.AspNetCore.Builder;
 
 public static class SetupRolesMethod
 {
@@ -12,5 +13,4 @@ public static class SetupRolesMethod
             await roleService.SetupRolesAsync();
         }
     }
-    
 }

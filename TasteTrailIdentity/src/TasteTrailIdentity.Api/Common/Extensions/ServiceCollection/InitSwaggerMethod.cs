@@ -1,4 +1,4 @@
-namespace TasteTrailIdentity.Api.Common.Extensions.ServiceCollectionExtensions;
+namespace TasteTrailIdentity.Api.Common.Extensions.ServiceCollection;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
@@ -11,7 +11,7 @@ public static class InitSwaggerMethod
         {
             options.SwaggerDoc("v1", new OpenApiInfo()
             {
-                Title = "TasteTrail IdentityManager Service",
+                Title = "TasteTrail Identity Service",
                 Version = "v1",
             });
 

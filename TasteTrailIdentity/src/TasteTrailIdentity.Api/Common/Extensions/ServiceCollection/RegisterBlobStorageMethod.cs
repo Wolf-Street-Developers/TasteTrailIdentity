@@ -1,6 +1,6 @@
 using Azure.Storage.Blobs;
 
-namespace TasteTrailIdentity.Api.Common.Extensions.ServiceCollectionExtensions;
+namespace TasteTrailIdentity.Api.Common.Extensions.ServiceCollection;
 
 public static class RegisterBlobStorageMethod
 {
