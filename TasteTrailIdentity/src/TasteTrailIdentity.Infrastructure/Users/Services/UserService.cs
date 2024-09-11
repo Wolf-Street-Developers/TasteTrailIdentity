@@ -1,8 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using TasteTrailIdentity.Core.Users.Models;
-using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Services;
 using TasteTrailIdentity.Core.Users.Services;
 using TasteTrailData.Core.Roles.Enums;
 using TasteTrailIdentity.Core.Roles.Models;

@@ -1,3 +1,4 @@
+
 using System.ComponentModel.DataAnnotations;
 
 namespace TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Entities;

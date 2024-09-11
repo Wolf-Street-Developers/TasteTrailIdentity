@@ -14,5 +14,9 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
         builder
             .Property(f => f.CreationDate)
             .IsRequired();
+
+        builder
+            .Property(f => f.UserId)
+            .IsRequired();
     }
 }

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using TasteTrailData.Core.Common.Models.Base;
-using TasteTrailData.Core.Common.Tokens.RefreshTokens.Entities;
+using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Entities;
 
 namespace TasteTrailIdentity.Core.Users.Models;
 
