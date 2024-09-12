@@ -5,6 +5,7 @@ using TasteTrailIdentity.Api.Common.Extensions.WebApplicationBuilder;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.SetupVariables();
+builder.InitMessageBroker();
 
 builder.Services.InitAspnetIdentity(builder.Configuration);
 builder.Services.InitAuth(builder.Configuration);

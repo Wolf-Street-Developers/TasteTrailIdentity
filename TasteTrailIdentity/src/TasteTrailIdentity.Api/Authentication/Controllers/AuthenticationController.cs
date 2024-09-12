@@ -7,7 +7,7 @@ using TasteTrailIdentity.Core.Users.Models;
 using TasteTrailData.Api.Common.Extensions.Controllers;
 using TasteTrailIdentity.Core.Authentication.Services;
 using TasteTrailIdentity.Infrastructure.Identities.Dtos;
-using TasteTrailIdentity.Core.Users.Managers;
+using TasteTrailData.Infrastructure.Blob.Managers;
 
 namespace TasteTrailIdentity.Api.Controllers;
 
@@ -16,11 +16,11 @@ namespace TasteTrailIdentity.Api.Controllers;
 public class AuthenticationController : ControllerBase
 {
     private readonly IIdentityAuthService _identityAuthService;
-    private readonly IUserImageManager _userImageManager;
+    private readonly BaseBlobImageManager<string> _userImageManager;
 
     public AuthenticationController(
         IIdentityAuthService identityAuthService,
-        IUserImageManager userImageManager
+        BaseBlobImageManager<string> userImageManager
     )
     {
         _identityAuthService = identityAuthService;
@@ -62,7 +62,7 @@ public class AuthenticationController : ControllerBase
             {
                 UserName = registrationDto.Name,
                 Email = registrationDto.Email,
-                AvatarPath = await _userImageManager.GetDefaultImageUrlAsync(),
+                AvatarPath = _userImageManager.GetDefaultImageUrl(),
             };
 
             var result = await _identityAuthService.RegisterAsync(user, registrationDto.Password);
