@@ -15,6 +15,7 @@ using TasteTrailIdentity.Core.Users.Services;
 using TasteTrailIdentity.Infrastructure.Common.Options;
 using TasteTrailIdentity.Infrastructure.Common.Extensions.IdentityAuthService;
 using TasteTrailIdentity.Core.Common.Services;
+using TasteTrailIdentity.Core.Roles.Services;
 
 namespace TasteTrailIdentity.Infrastructure.Authentication.Services;
 
@@ -25,13 +26,15 @@ public class IdentityAuthService : IIdentityAuthService
     private readonly JwtOptions _jwtOptions;
     private readonly IMessageBrokerService _messageBrokerService;
     private readonly IRefreshTokenService _refreshTokenService;
+    private readonly IRoleService _roleService;
 
     public IdentityAuthService(
         SignInManager<User> signInManager, 
         IUserService userService, 
         IOptionsSnapshot<JwtOptions> jwtOptionsSnapshot,
         IRefreshTokenService refreshTokenService,
-        IMessageBrokerService messageBrokerService
+        IMessageBrokerService messageBrokerService,
+        IRoleService roleService
         )
     {
         _refreshTokenService = refreshTokenService;
@@ -39,22 +42,24 @@ public class IdentityAuthService : IIdentityAuthService
         _userService = userService;
         _jwtOptions = jwtOptionsSnapshot.Value;
         _messageBrokerService = messageBrokerService;
+        _roleService = roleService;
     }
 
     public async Task<IdentityResult> RegisterAsync(User user, string password) {
         
-        var deafultRole = UserRoles.User;
+        var defaultRole = UserRoles.User;
+        var defaultRoleId = await _roleService.GetRoleIdByName(defaultRole);
         var creationResult = await _userService.CreateUserAsync(user, password);
-        var roleAssignResult = await _userService.AssignRoleToUserAsync(user.Id, deafultRole);
+        var roleAssignResult = await _userService.AssignRoleToUserAsync(user.Id, defaultRole);
 
         var result = creationResult.Succeeded && roleAssignResult.Succeeded;
 
         if(result)
         {
-            await _messageBrokerService.PushAsync("register", new {
+            await _messageBrokerService.PushAsync("user_create_identity_admin", new {
                 UserName = user.UserName,
                 Id = user.Id,
-                RoleName = deafultRole,
+                RoleId = defaultRoleId,
                 Email = user.Email,
                 IsBanned = false,
                 IsMuted = false,
@@ -95,7 +100,8 @@ public class IdentityAuthService : IIdentityAuthService
             .Select(roleStr => new Claim(ClaimTypes.Role, roleStr))
             .Append(new Claim(ClaimTypes.NameIdentifier, user.Id))
             .Append(new Claim(ClaimTypes.Email, user.Email ?? "not set"))
-            .Append(new Claim("isMuted", $"{user.IsMuted}" ?? "not set"))
+            .Append(new Claim("IsMuted", $"{user.IsMuted}" ?? "not set"))
+            .Append(new Claim("AvatarPath", $"{user.AvatarPath}" ?? "not set"))
             .Append(new Claim(ClaimTypes.Name, user.UserName ?? "not set"));
 
         var signingKey = new SymmetricSecurityKey(_jwtOptions.KeyInBytes);

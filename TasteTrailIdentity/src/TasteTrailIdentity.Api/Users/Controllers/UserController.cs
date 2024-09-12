@@ -81,8 +81,6 @@ public class UserController : ControllerBase
 
             var jwt = HttpContext.Request.Headers.Authorization.FirstOrDefault();
 
-            _ = await _identityAuthService.SignOutAsync(jwt: jwt!, refresh: refresh);
-
             return Ok();
         }       
         catch(ArgumentException exception)

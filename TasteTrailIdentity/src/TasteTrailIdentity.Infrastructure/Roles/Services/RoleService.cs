@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using TasteTrailData.Core.Roles.Enums;
 using TasteTrailIdentity.Core.Roles.Models;
 using TasteTrailIdentity.Core.Roles.Services;
 
@@ -13,9 +14,15 @@ public class RoleService : IRoleService
         _roleManager = roleManager;
     }
 
+    public async Task<string> GetRoleIdByName(UserRoles roleName)
+    {
+        return await _roleManager.GetRoleIdAsync(new Role(){
+            Name = roleName.ToString(),
+        }) ?? throw new Exception($"role {roleName} doen't exists");
+    }
     public async Task SetupRolesAsync()
     {
-        List<string> roleNames = ["Admin", "User", "Owner"];
+        List<string> roleNames = [$"{UserRoles.Admin}", $"{UserRoles.User}", $"{UserRoles.Owner}"];
         
         foreach (var roleName in roleNames)
         {
