@@ -4,6 +4,7 @@ using TasteTrailIdentity.Core.Users.Models;
 using TasteTrailIdentity.Core.Users.Services;
 using TasteTrailData.Core.Roles.Enums;
 using TasteTrailIdentity.Core.Roles.Models;
+using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Services;
 
 namespace TasteTrailIdentity.Infrastructure.Users.Services;
 
@@ -11,9 +12,11 @@ public class UserService : IUserService
 {
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<Role> _roleManager;
+    private readonly IRefreshTokenService _refreshService;
 
-    public UserService(UserManager<User> userManager, RoleManager<Role> roleManager)
+    public UserService(UserManager<User> userManager, RoleManager<Role> roleManager, IRefreshTokenService refreshService)
     {
+        _refreshService = refreshService;
         _userManager = userManager;
         _roleManager = roleManager;
     }
@@ -72,5 +75,35 @@ public class UserService : IUserService
             return IdentityResult.Failed(new IdentityError { Description = $"Role {roleName} not found." });
 
         return await _userManager.AddToRoleAsync(user, roleName);
+    }
+
+    public async Task<IdentityResult> UpdateUserAsync(User user, Guid refresh)
+    {
+        var userToChange = await _userManager.FindByIdAsync(user.Id) ?? throw new ArgumentException($"cannot find user with id: {user.Id}");
+
+        userToChange.Email = user.Email;
+        userToChange.UserName = user.UserName;
+
+        var refreshToken = await _refreshService.GetByIdAsync(refresh) ?? throw new ArgumentException("Wrong refresh");
+
+        if(refreshToken.UserId != user.Id)
+        {
+            throw new ArgumentException($"user with id {user.Id} doesn't possess refresh {refresh}");
+        }
+
+        return await _userManager.UpdateAsync(userToChange);
+    }
+
+    public async Task PatchAvatarUrlPathAsync(string userId, string avatarPath)
+    {
+        var userToChange = await _userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"cannot find user with id: {userId}");
+
+        if (string.IsNullOrWhiteSpace(avatarPath))
+        {
+            throw new ArgumentException("Logo URL path cannot be null or empty.", nameof(avatarPath));
+        }
+        userToChange.AvatarPath = avatarPath;
+
+        await _userManager.UpdateAsync(userToChange);
     }
 }

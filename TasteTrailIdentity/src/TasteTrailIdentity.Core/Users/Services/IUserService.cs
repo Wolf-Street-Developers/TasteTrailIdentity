@@ -22,5 +22,9 @@ public interface IUserService
     Task<IdentityResult> AddUserClaimAsync(User user, Claim claim);
 
     Task<IdentityResult> AssignRoleToUserAsync(string userId, UserRoles role);
+
+    Task<IdentityResult> UpdateUserAsync(User user, Guid refresh);
+
+    Task PatchAvatarUrlPathAsync(string userId, string avatarPath);
 }
 

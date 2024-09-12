@@ -1,33 +1,69 @@
-#pragma warning disable CS1998
-
 using Azure.Storage.Blobs;
-using TasteTrailIdentity.Core.Users.Managers;
+using Azure.Storage.Blobs.Models;
+using Microsoft.AspNetCore.Http;
+using TasteTrailData.Infrastructure.Blob.Managers;
+using TasteTrailIdentity.Core.Users.Services;
 
 namespace TasteTrailIdentity.Infrastructure.Users.Managers;
 
 
-public class UserImageManager : IUserImageManager
+public class UserImageManager : BaseBlobImageManager<string>
 {
-    private readonly string _containerName;
+   private readonly IUserService _userService;
+    private readonly string _defaultAvatarUrl;
 
-    protected readonly BlobServiceClient _blobServiceClient;
-
-    public UserImageManager(BlobServiceClient blobServiceClient) 
+    public UserImageManager(IUserService userService, BlobServiceClient blobServiceClient) : base(blobServiceClient, "user-avatars")
     {
-        _containerName = "user-avatars";
-        _blobServiceClient = blobServiceClient;
+        _userService = userService;
+
+            _defaultAvatarUrl = GetDefaultImageUrl();
+
     }
 
-    public async Task<string> GetDefaultImageUrlAsync()
+
+    public async override Task<string> DeleteImageAsync(string id)
     {
-        BlobContainerClient blobContainerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
-        string blobName = "default-image.png";
-        BlobClient blobClient = blobContainerClient.GetBlobClient(blobName);
-        if (!blobClient.Exists())
+        var user = await _userService.GetUserByIdAsync(id) ?? throw new ArgumentException($"User with Id {id} not found.");
+
+        if (!string.IsNullOrEmpty(user.AvatarPath) && !user.AvatarPath.Equals(_defaultAvatarUrl, StringComparison.OrdinalIgnoreCase))
         {
-            throw new InvalidOperationException("Default image does not exist in Blob Storage.");
+            var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
+            var blobUri = new Uri(user.AvatarPath).AbsolutePath.TrimStart('/');
+            var blobName = Path.GetFileName(blobUri);
+            var blobClient = containerClient.GetBlobClient(blobName);
+
+            await blobClient.DeleteIfExistsAsync();
         }
 
-        return blobClient.Uri.ToString();
+        await _userService.PatchAvatarUrlPathAsync(id, _defaultAvatarUrl);
+
+        return user.AvatarPath!;
+    }
+
+    public async override Task<string> SetImageAsync(string id, IFormFile? avatar)
+    {
+        var user = await _userService.GetUserByIdAsync(id) ?? throw new ArgumentException($"User with Id {id} not found.");
+
+        if (avatar == null || avatar.Length == 0)
+        {
+            await _userService.PatchAvatarUrlPathAsync(id, _defaultAvatarUrl);
+            return _defaultAvatarUrl;
+        }
+
+        var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
+        await containerClient.CreateIfNotExistsAsync(PublicAccessType.Blob);
+
+        var blobName = $"{user.Id}{Path.GetExtension(avatar.FileName)}";
+        var blobClient = containerClient.GetBlobClient(blobName);
+
+        using (var stream = avatar.OpenReadStream())
+        {
+            await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = avatar.ContentType });
+        }
+
+        var avatarUrl = blobClient.Uri.ToString();
+        await _userService.PatchAvatarUrlPathAsync(id, avatarUrl);
+
+        return avatarUrl;
     }
 }
