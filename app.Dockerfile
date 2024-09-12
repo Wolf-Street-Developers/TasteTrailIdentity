@@ -7,7 +7,7 @@ COPY ./TasteTrailIdentity/src/TasteTrailIdentity.Core/*.csproj .TasteTrailIdenti
 
 COPY . .
 
-RUN dotnet publish TasteTrailIdentity/src/TasteTrailIdentity.Api/*.csproj -c Release -o /app/publish
+RUN dotnet publish TasteTrailIdentity/src/TasteTrailIdentity.Api/TasteTrailIdentity.Api.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
