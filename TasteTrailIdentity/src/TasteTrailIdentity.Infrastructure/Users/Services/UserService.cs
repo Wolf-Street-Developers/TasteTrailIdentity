@@ -12,16 +12,16 @@ namespace TasteTrailIdentity.Infrastructure.Users.Services;
 public class UserService : IUserService
 {
     private readonly UserManager<User> _userManager;
-    private readonly RoleManager<Role> _roleManager;
+
     private readonly IRefreshTokenService _refreshService;
     private readonly IMessageBrokerService _messageBrokerService;
 
-    public UserService(UserManager<User> userManager, RoleManager<Role> roleManager, IRefreshTokenService refreshService
+    public UserService(UserManager<User> userManager, IRefreshTokenService refreshService
             , IMessageBrokerService messageBrokerService)
     {
         _refreshService = refreshService;
         _userManager = userManager;
-        _roleManager = roleManager;
+
         _messageBrokerService = messageBrokerService;
     }
 
@@ -75,42 +75,51 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"cannot find user with id: {userId}");
         var roleName = role.ToString();
 
-        if (!await _roleManager.RoleExistsAsync(roleName))
-            return IdentityResult.Failed(new IdentityError { Description = $"Role {roleName} not found." });
 
         return await _userManager.AddToRoleAsync(user, roleName);
     }
 
-    public async Task<IdentityResult> UpdateUserAsync(User user, Guid refresh)
+    public async Task<IdentityResult> UpdateUserAsync(User userDto, Guid refresh)
     {
-        var userToChange = await _userManager.FindByIdAsync(user.Id) ?? throw new ArgumentException($"cannot find user with id: {user.Id}");
+        var isUserNameEmpty = string.IsNullOrEmpty(userDto.UserName) || string.IsNullOrWhiteSpace(userDto.UserName);
+        var isEmailEmpty = string.IsNullOrEmpty(userDto.Email) || string.IsNullOrWhiteSpace(userDto.Email);
 
-        userToChange.Email = user.Email;
-        userToChange.UserName = user.UserName;
+        if(isUserNameEmpty && isEmailEmpty)
+        {
+            throw new ArgumentException("dto is empty");
+        }
+        var userToChange = await _userManager.FindByIdAsync(userDto.Id) ?? throw new ArgumentException($"cannot find user with id: {userDto.Id}");
+
+        if( (!isUserNameEmpty && userDto.UserName == userToChange.UserName) || (!isEmailEmpty && userDto.Email == userToChange.Email))
+        {
+            throw new ArgumentException("no actual change detected");
+        }
+
+        userToChange.Email = isUserNameEmpty ? userToChange.Email : userDto.Email;
+        userToChange.UserName = isUserNameEmpty ? userToChange.UserName : userDto.UserName ;
 
         var refreshToken = await _refreshService.GetByIdAsync(refresh) ?? throw new ArgumentException("Wrong refresh");
 
-        if(refreshToken.UserId != user.Id)
+        if(refreshToken.UserId != userDto.Id)
         {
-            throw new ArgumentException($"user with id {user.Id} doesn't possess refresh {refresh}");
+            throw new ArgumentException($"user with id {userDto.Id} doesn't possess refresh {refresh}");
         }
 
         var result = await _userManager.UpdateAsync(userToChange);
 
         if(result.Succeeded)
         {
-            var updatedUser = await _userManager.FindByIdAsync(user.Id) ?? throw new Exception("no such user");
-            var role = (await _userManager.GetRolesAsync(updatedUser)).First();
-            var roleId = await _roleManager.GetRoleIdAsync(new Role{Name = role});
+            var updatedUser = await _userManager.FindByIdAsync(userDto.Id) ?? throw new Exception("no such user");
 
-            await _messageBrokerService.PushAsync("user_update_identity_admin", new {
+            await _messageBrokerService.PushAsync("user_update_admin", new {
                 UserName = updatedUser.UserName,
                 Id = updatedUser.Id,
-                RoleId = roleId,
                 Email = updatedUser.Email,
-                IsBanned = false,
-                IsMuted = false,
-                AvatarPath = user.AvatarPath,
+            });
+
+            await _messageBrokerService.PushAsync("user_update_userexperience", new {
+                UserName = updatedUser.UserName,
+                Id = updatedUser.Id,
             });
         }
         return result;
@@ -132,19 +141,5 @@ public class UserService : IUserService
         {
             throw new Exception("couldn't update avatar for user");
         }
-
-        var updatedUser = await _userManager.FindByIdAsync(userId) ?? throw new Exception("no such user");
-        var role = (await _userManager.GetRolesAsync(updatedUser)).First();
-        var roleId = await _roleManager.GetRoleIdAsync(new Role{Name = role});
-
-        await _messageBrokerService.PushAsync("user_update_identity_admin", new {
-            UserName = userToChange.UserName,
-            Id = userToChange.Id,
-            RoleId = roleId,
-            Email = userToChange.Email,
-            IsBanned = false,
-            IsMuted = false,
-            AvatarPath = avatarPath,
-        });
     }
 }

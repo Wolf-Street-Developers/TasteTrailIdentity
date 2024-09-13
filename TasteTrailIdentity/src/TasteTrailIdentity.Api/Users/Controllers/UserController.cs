@@ -56,22 +56,17 @@ public class UserController : ControllerBase
 
     [HttpPut("/api/[controller]")]
     [Authorize]
-    public async Task<IActionResult> UpdateAsync([FromBody]UpdateUserDto model, [FromQuery] Guid refresh)
+    public async Task<IActionResult> UpdateAsync([FromBody]UpdateUserDto updateUserDto, [FromQuery] Guid refresh)
     {
         try
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.Values.SelectMany(v => v.Errors));
-            }
-
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var result = await _userService.UpdateUserAsync(new User()
             {
                 Id = userId!,
-                Email = model.Email,
-                UserName = model.Name
+                Email = updateUserDto.Email,
+                UserName = updateUserDto.UserName
             }, refresh);
 
             if (!result.Succeeded)
@@ -104,6 +99,32 @@ public class UserController : ControllerBase
 
             return Ok(new {
                 AvatarUrlPath = avatarUrlPath,
+            });
+        }       
+        catch(ArgumentException exception)
+        {   
+            return BadRequest(exception.Message);
+        }
+        catch(InvalidOperationException exception)
+        {   
+            return BadRequest(exception.Message);
+        }
+        catch(Exception exception)
+        {
+            return this.InternalServerError(exception.Message);
+        }
+    }
+
+    [HttpGet("/api/[controller]/Avatar/{userId}")]
+    [Authorize]
+    public async Task<IActionResult> GetAvatarAsync(string userId)
+    {
+        try
+        {
+            var user = await _userService.GetUserByIdAsync(userId);
+
+            return Ok(new {
+                AvatarUrlPath = user.AvatarPath,
             });
         }       
         catch(ArgumentException exception)
