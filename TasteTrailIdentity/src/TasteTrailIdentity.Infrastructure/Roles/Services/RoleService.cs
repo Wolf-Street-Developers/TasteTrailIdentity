@@ -27,38 +27,27 @@ public class RoleService : IRoleService
     public async Task SetupRolesAsync()
     {
         List<string> roleNames = [$"{UserRoles.Admin}", $"{UserRoles.User}", $"{UserRoles.Owner}"];
+        List<string> ids = ["28fe9063-d351-4704-ab1d-2996660da786", "a4fdddcf-7526-4cef-820f-7c86533246fc", "087d87e1-3b25-4ef7-ab94-b2442370b3df"];
         
-        foreach (var roleName in roleNames)
+        
+
+        for (int i = 0; i < roleNames.Count; i++)
         {
-            var roleExists = await this._roleManager.RoleExistsAsync(roleName);
+            var roleExists = await this._roleManager.RoleExistsAsync(roleNames[i]);
+
             if (!roleExists)
             {
                 var role = new Role()
                 {
-                    Name = roleName
+                    Id = ids[i],
+                    Name = roleNames[i]
                 };
                 var result = await this._roleManager.CreateAsync(role);
                 
                 if (!result.Succeeded)
                     throw new Exception("cannot create roles!!");
-
-                await _messageBrokerService.PushAsync("role_create_admin", new {
-                    Id = await _roleManager.GetRoleIdAsync(role),
-                    Name = role.Name,
-                });
-                
-                
+        
             }
-            else{
-                var roleId = await _roleManager.GetRoleIdAsync(new Role(){Name = roleName});
-
-                await _messageBrokerService.PushAsync("role_create_admin", new {
-                      Id = roleId,
-                      Name = roleName,
-                    });
-            }
-  
-
         }
     }
 }
