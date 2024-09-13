@@ -49,6 +49,9 @@ public class IdentityAuthService : IIdentityAuthService
         
         var defaultRole = UserRoles.User;
         var defaultRoleId = await _roleService.GetRoleIdByName(defaultRole);
+
+        System.Console.WriteLine($"\n\n\n\n\n\n\n\n{defaultRoleId}\n\n\n\n\n\n\n");
+
         var creationResult = await _userService.CreateUserAsync(user, password);
 
         if(!creationResult.Succeeded)
