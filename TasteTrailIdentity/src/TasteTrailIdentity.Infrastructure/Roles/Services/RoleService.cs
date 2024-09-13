@@ -48,6 +48,14 @@ public class RoleService : IRoleService
                 });
                 
             }
+
+            var roleId = await _roleManager.GetRoleIdAsync(new Role(){Name = roleName});
+
+            await _messageBrokerService.PushAsync("role_create_admin", new {
+                    Id = roleId,
+                    Name = roleName,
+                });
+
         }
     }
 }
