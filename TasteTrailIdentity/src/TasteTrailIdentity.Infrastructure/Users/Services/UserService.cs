@@ -96,7 +96,7 @@ public class UserService : IUserService
             throw new ArgumentException("no actual change detected");
         }
 
-        userToChange.Email = isUserNameEmpty ? userToChange.Email : userDto.Email;
+        userToChange.Email = isEmailEmpty ? userToChange.Email : userDto.Email;
         userToChange.UserName = isUserNameEmpty ? userToChange.UserName : userDto.UserName ;
 
         var refreshToken = await _refreshService.GetByIdAsync(refresh) ?? throw new ArgumentException("Wrong refresh");
