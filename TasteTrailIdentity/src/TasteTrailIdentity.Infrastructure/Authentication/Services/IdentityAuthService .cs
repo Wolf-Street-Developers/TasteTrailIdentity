@@ -50,20 +50,25 @@ public class IdentityAuthService : IIdentityAuthService
         var defaultRole = UserRoles.User;
         var defaultRoleId = await _roleService.GetRoleIdByName(defaultRole);
         var creationResult = await _userService.CreateUserAsync(user, password);
+
+        if(!creationResult.Succeeded)
+        {
+            return creationResult;
+        }
+        
         var roleAssignResult = await _userService.AssignRoleToUserAsync(user.Id, defaultRole);
 
         var result = creationResult.Succeeded && roleAssignResult.Succeeded;
 
         if(result)
         {
-            await _messageBrokerService.PushAsync("user_create_identity_admin", new {
+            await _messageBrokerService.PushAsync("user_create_admin", new {
                 UserName = user.UserName,
                 Id = user.Id,
                 RoleId = defaultRoleId,
                 Email = user.Email,
                 IsBanned = false,
                 IsMuted = false,
-                AvatarPath = user.AvatarPath,
             });
         }
 

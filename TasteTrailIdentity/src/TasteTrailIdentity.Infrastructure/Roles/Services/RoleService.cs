@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using TasteTrailData.Core.Roles.Enums;
+using TasteTrailIdentity.Core.Common.Services;
 using TasteTrailIdentity.Core.Roles.Models;
 using TasteTrailIdentity.Core.Roles.Services;
 
@@ -9,9 +10,12 @@ public class RoleService : IRoleService
 {
     private readonly RoleManager<Role> _roleManager;
 
-    public RoleService(RoleManager<Role> roleManager)
+    private readonly IMessageBrokerService _messageBrokerService;
+
+    public RoleService(RoleManager<Role> roleManager, IMessageBrokerService messageBrokerService)
     {
         _roleManager = roleManager;
+        _messageBrokerService = messageBrokerService;
     }
 
     public async Task<string> GetRoleIdByName(UserRoles roleName)
@@ -36,8 +40,13 @@ public class RoleService : IRoleService
                 var result = await this._roleManager.CreateAsync(role);
                 
                 if (!result.Succeeded)
-                    foreach (var error in result.Errors)
-                        Console.WriteLine($"Error creating role {roleName}: {error.Description}");
+                    throw new Exception("cannot create roles!!");
+
+                await _messageBrokerService.PushAsync("role_create_admin", new {
+                    Id = await _roleManager.GetRoleIdAsync(role),
+                    Name = role.Name,
+                });
+                
             }
         }
     }

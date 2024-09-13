@@ -13,15 +13,16 @@ public class UserService : IUserService
 {
     private readonly UserManager<User> _userManager;
 
+    private readonly RoleManager<Role> _roleManager;
     private readonly IRefreshTokenService _refreshService;
     private readonly IMessageBrokerService _messageBrokerService;
 
     public UserService(UserManager<User> userManager, IRefreshTokenService refreshService
-            , IMessageBrokerService messageBrokerService)
+            , IMessageBrokerService messageBrokerService, RoleManager<Role> roleManager)
     {
         _refreshService = refreshService;
         _userManager = userManager;
-
+        _roleManager = roleManager;
         _messageBrokerService = messageBrokerService;
     }
 
@@ -141,5 +142,31 @@ public class UserService : IUserService
         {
             throw new Exception("couldn't update avatar for user");
         }
+    }
+
+    public async Task UpdateUserRoleAsync(string userId, string roleId)
+    {
+        var user = await _userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"no role found with id: {userId}");
+        var role = await _roleManager.FindByIdAsync(roleId) ?? throw new ArgumentException($"no role found with id: {roleId}");
+
+        var userRoles = await _userManager.GetRolesAsync(user);
+        await _userManager.RemoveFromRolesAsync(user, userRoles);
+        await _userManager.AddToRoleAsync(user, role.Name!);
+    }
+
+    public async Task UpdateBanAsync(string userId, bool IsBanned)
+    {
+        var user = await _userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"no role found with id: {userId}");
+        user.IsBanned = IsBanned;
+
+        await _userManager.UpdateAsync(user);
+    }
+
+    public async Task UpdateMuteAsync(string userId, bool IsMuted)
+    {
+        var user = await _userManager.FindByIdAsync(userId) ?? throw new ArgumentException($"no role found with id: {userId}");
+        user.IsMuted = IsMuted;
+
+        await _userManager.UpdateAsync(user);
     }
 }

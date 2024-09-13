@@ -8,6 +8,7 @@ using TasteTrailIdentity.Core.Common.Tokens.RefreshTokens.Services;
 using TasteTrailIdentity.Core.Roles.Services;
 using TasteTrailIdentity.Core.Users.Services;
 using TasteTrailIdentity.Infrastructure.Authentication.Services;
+using TasteTrailIdentity.Infrastructure.Common.BackgroundServices;
 using TasteTrailIdentity.Infrastructure.Common.RefreshTokens.Repositories.Ef_Core;
 using TasteTrailIdentity.Infrastructure.Common.RefreshTokens.Services;
 using TasteTrailIdentity.Infrastructure.Common.Services;
@@ -28,5 +29,8 @@ public static class RegisterDependencyInjectionMethod
 
         serviceCollection.AddTransient<BaseBlobImageManager<string>, UserImageManager>();
         serviceCollection.AddTransient<IMessageBrokerService, RabbitMqService>();
+
+        serviceCollection.AddHostedService<UserRabbitMqService>();
+        serviceCollection.AddHostedService<RoleRabbitMqService>();
     } 
 }
