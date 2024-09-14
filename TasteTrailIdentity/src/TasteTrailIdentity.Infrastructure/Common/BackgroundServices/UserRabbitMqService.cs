@@ -42,6 +42,18 @@ public class UserRabbitMqService: BaseRabbitMqService, IHostedService
             }
         });
 
+        base.StartListening("role_update_identity", async message => {
+
+            using (var scope = base.serviceScopeFactory.CreateScope())
+            {
+                var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+
+                var dtoMute = JsonSerializer.Deserialize<UpdateUserRoleDto>(message)!;
+
+                await userService.UpdateUserRoleAsync(userId: dtoMute.Id, dtoMute.RoleId);
+            }
+        });
+
 
         return Task.CompletedTask;
     }
