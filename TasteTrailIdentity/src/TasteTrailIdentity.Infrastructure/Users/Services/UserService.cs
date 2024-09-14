@@ -119,7 +119,7 @@ public class UserService : IUserService
             });
 
             await _messageBrokerService.PushAsync("user_update_userexperience", new {
-                UserName = updatedUser.UserName,
+                Username = updatedUser.UserName,
                 Id = updatedUser.Id,
             });
         }
