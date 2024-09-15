@@ -109,6 +109,7 @@ public class IdentityAuthService : IIdentityAuthService
             .Append(new Claim(ClaimTypes.NameIdentifier, user.Id))
             .Append(new Claim(ClaimTypes.Email, user.Email ?? "not set"))
             .Append(new Claim("IsMuted", $"{user.IsMuted}" ?? "not set"))
+            .Append(new Claim("AvatarUrl", user.AvatarPath ?? "not set"))
             .Append(new Claim(ClaimTypes.Name, user.UserName ?? "not set"));
 
         var signingKey = new SymmetricSecurityKey(_jwtOptions.KeyInBytes);
