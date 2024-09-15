@@ -16,11 +16,9 @@ public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly BaseBlobImageManager<string> _userImageManager;
-    private readonly IIdentityAuthService _identityAuthService;
 
-    public UserController(IIdentityAuthService identityAuthService, IUserService userService, BaseBlobImageManager<string> userImageManager)
+    public UserController(IUserService userService, BaseBlobImageManager<string> userImageManager)
     {
-        _identityAuthService = identityAuthService;
         _userService = userService;
         _userImageManager = userImageManager;
     }
@@ -115,9 +113,9 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpGet("/api/[controller]/Avatar/{userId}")]
+    [HttpGet("/api/[controller]/Avatar")]
     [Authorize]
-    public async Task<IActionResult> GetAvatarAsync(string userId)
+    public async Task<IActionResult> GetAvatarAsync([FromQuery]string userId)
     {
         try
         {
