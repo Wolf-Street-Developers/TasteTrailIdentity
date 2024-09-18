@@ -54,7 +54,7 @@ public class UserController : ControllerBase
 
     [HttpPut("/api/[controller]")]
     [Authorize]
-    public async Task<IActionResult> UpdateAsync([FromBody]UpdateUserDto updateUserDto, [FromQuery] Guid refresh)
+    public async Task<IActionResult> UpdateAsync([FromBody]UpdateUserDto updateUserDto)
     {
         try
         {
@@ -65,7 +65,7 @@ public class UserController : ControllerBase
                 Id = userId!,
                 Email = updateUserDto.Email,
                 UserName = updateUserDto.UserName
-            }, refresh);
+            }, updateUserDto.Refresh);
 
             if (!result.Succeeded)
             {
