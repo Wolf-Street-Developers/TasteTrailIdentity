@@ -9,14 +9,14 @@ namespace TasteTrailIdentity.Infrastructure.Users.Managers;
 
 public class UserImageManager : BaseBlobImageManager<string>
 {
-   private readonly IUserService _userService;
+    private readonly IUserService _userService;
     private readonly string _defaultAvatarUrl;
 
     public UserImageManager(IUserService userService, BlobServiceClient blobServiceClient) : base(blobServiceClient, "user-avatars")
     {
         _userService = userService;
 
-            _defaultAvatarUrl = GetDefaultImageUrl();
+        _defaultAvatarUrl = GetDefaultImageUrl();
 
     }
 

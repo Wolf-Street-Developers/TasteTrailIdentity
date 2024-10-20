@@ -10,7 +10,7 @@ public static class RegisterBlobStorageMethod
         {
             var connectionString = configuration.GetConnectionString("AzureBlobStorage") 
                 ?? throw new ArgumentNullException("connection string for blob storage is null");
-                
+
             return new BlobServiceClient(connectionString);
         });
     }
