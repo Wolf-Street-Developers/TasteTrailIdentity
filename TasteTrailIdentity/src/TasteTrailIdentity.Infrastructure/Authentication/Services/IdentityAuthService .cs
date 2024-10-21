@@ -47,7 +47,7 @@ public class IdentityAuthService : IIdentityAuthService
 
     public async Task<IdentityResult> RegisterAsync(User user, string password) {
         
-        var defaultRole = UserRoles.Admin;
+        var defaultRole = UserRoles.User;
         var defaultRoleId = await _roleService.GetRoleIdByName(defaultRole);
 
         var creationResult = await _userService.CreateUserAsync(user, password);
