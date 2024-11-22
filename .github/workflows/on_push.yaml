@@ -58,6 +58,6 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd /home/azureuser/TasteTrailIdentity
-            sudo -S docker compose pull
-            sudo -S docker compose down
-            sudo -S docker compose up -d
+            echo "${{ secrets.SSH_PASSWORD }}" | sudo -S docker compose pull
+            echo "${{ secrets.SSH_PASSWORD }}" | sudo -S docker compose down
+            echo "${{ secrets.SSH_PASSWORD }}" | sudo -S docker compose up -d
