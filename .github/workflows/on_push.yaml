@@ -3,7 +3,8 @@ name: Restore, Build, Test and Deploy dotnet TasteTrailIdentity app
 on:
   push:
     branches:
-      - main  
+      - main 
+  workflow_dispatch:
 
 jobs:
   restore_build_test:
